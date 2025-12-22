@@ -8,7 +8,7 @@ type Language = 'curl' | 'nodejs' | 'python' | 'php';
 const codeExamples: Record<Language, string> = {
   curl: `# Register a webhook endpoint
 curl -X POST \\
-  https://api.sendcomms.com/v1/webhooks \\
+  https://api.sendcomms.com/api/v1/webhooks \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -20,7 +20,7 @@ curl -X POST \\
 
 // Register a webhook endpoint
 const response = await axios.post(
-  'https://api.sendcomms.com/v1/webhooks',
+  'https://api.sendcomms.com/api/v1/webhooks',
   {
     url: 'https://your-server.com/webhooks/email',
     events: ['email.sent', 'email.delivered', 'email.bounced', 'email.complained'],
@@ -39,7 +39,7 @@ console.log(response.data);`,
 
 # Register a webhook endpoint
 response = requests.post(
-    'https://api.sendcomms.com/v1/webhooks',
+    'https://api.sendcomms.com/api/v1/webhooks',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ $data = [
 ];
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => 'https://api.sendcomms.com/v1/webhooks',
+    CURLOPT_URL => 'https://api.sendcomms.com/api/v1/webhooks',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => json_encode($data),
@@ -324,7 +324,7 @@ app.post('/webhooks/sendcomms', (req, res) => {
           <div>
             <p className="text-sm text-white font-medium mb-2">List Your Webhooks</p>
             <pre className="bg-[#0b0c0e] p-3 rounded text-xs overflow-x-auto border border-white/5">
-              <code className="text-gray-300">{`curl -X GET https://api.sendcomms.com/v1/webhooks \\
+              <code className="text-gray-300">{`curl -X GET https://api.sendcomms.com/api/v1/webhooks \\
   -H "Authorization: Bearer YOUR_API_KEY"`}</code>
             </pre>
           </div>
@@ -333,7 +333,7 @@ app.post('/webhooks/sendcomms', (req, res) => {
           <div>
             <p className="text-sm text-white font-medium mb-2">Delete a Webhook</p>
             <pre className="bg-[#0b0c0e] p-3 rounded text-xs overflow-x-auto border border-white/5">
-              <code className="text-gray-300">{`curl -X DELETE "https://api.sendcomms.com/v1/webhooks?id=WEBHOOK_ID" \\
+              <code className="text-gray-300">{`curl -X DELETE "https://api.sendcomms.com/api/v1/webhooks?id=WEBHOOK_ID" \\
   -H "Authorization: Bearer YOUR_API_KEY"`}</code>
             </pre>
           </div>

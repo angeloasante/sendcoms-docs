@@ -7,7 +7,7 @@ type Language = 'curl' | 'nodejs' | 'python' | 'php';
 
 const codeExamples: Record<Language, string> = {
   curl: `curl -X POST \\
-  https://api.sendcomms.com/v1/email/batch \\
+  https://api.sendcomms.com/api/v1/email/batch \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -32,7 +32,7 @@ const codeExamples: Record<Language, string> = {
   nodejs: `import axios from 'axios';
 
 const response = await axios.post(
-  'https://api.sendcomms.com/v1/email/batch',
+  'https://api.sendcomms.com/api/v1/email/batch',
   {
     emails: [
       {
@@ -64,7 +64,7 @@ console.log(response.data);`,
   python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/email/batch',
+    'https://api.sendcomms.com/api/v1/email/batch',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ $data = [
 ];
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => 'https://api.sendcomms.com/v1/email/batch',
+    CURLOPT_URL => 'https://api.sendcomms.com/api/v1/email/batch',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => json_encode($data),

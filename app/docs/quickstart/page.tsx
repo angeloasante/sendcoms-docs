@@ -22,7 +22,7 @@ const languages: { id: LanguageType; name: string }[] = [
 
 const codeExamples: Record<ServiceType, Record<LanguageType, string>> = {
   email: {
-    curl: `curl -X POST https://api.sendcomms.com/v1/email/send \\
+    curl: `curl -X POST https://api.sendcomms.com/api/v1/email/send \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -33,7 +33,7 @@ const codeExamples: Record<ServiceType, Record<LanguageType, string>> = {
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
-const response = await fetch('https://api.sendcomms.com/v1/email/send', {
+const response = await fetch('https://api.sendcomms.com/api/v1/email/send', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -52,7 +52,7 @@ console.log(result);`,
     python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/email/send',
+    'https://api.sendcomms.com/api/v1/email/send',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ response = requests.post(
 
 print(response.json())`,
     php: `<?php
-$ch = curl_init('https://api.sendcomms.com/v1/email/send');
+$ch = curl_init('https://api.sendcomms.com/api/v1/email/send');
 
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
@@ -90,7 +90,7 @@ curl_close($ch);
 echo $response;`
   },
   sms: {
-    curl: `curl -X POST https://api.sendcomms.com/v1/sms/send \\
+    curl: `curl -X POST https://api.sendcomms.com/api/v1/sms/send \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -99,7 +99,7 @@ echo $response;`
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
-const response = await fetch('https://api.sendcomms.com/v1/sms/send', {
+const response = await fetch('https://api.sendcomms.com/api/v1/sms/send', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -116,7 +116,7 @@ console.log(result);`,
     python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/sms/send',
+    'https://api.sendcomms.com/api/v1/sms/send',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -129,7 +129,7 @@ response = requests.post(
 
 print(response.json())`,
     php: `<?php
-$ch = curl_init('https://api.sendcomms.com/v1/sms/send');
+$ch = curl_init('https://api.sendcomms.com/api/v1/sms/send');
 
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
@@ -150,7 +150,7 @@ curl_close($ch);
 echo $response;`
   },
   airtime: {
-    curl: `curl -X POST https://api.sendcomms.com/v1/airtime/purchase \\
+    curl: `curl -X POST https://api.sendcomms.com/api/v1/airtime/purchase \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -160,7 +160,7 @@ echo $response;`
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
-const response = await fetch('https://api.sendcomms.com/v1/airtime/purchase', {
+const response = await fetch('https://api.sendcomms.com/api/v1/airtime/purchase', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -178,7 +178,7 @@ console.log(result);`,
     python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/airtime/purchase',
+    'https://api.sendcomms.com/api/v1/airtime/purchase',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ response = requests.post(
 
 print(response.json())`,
     php: `<?php
-$ch = curl_init('https://api.sendcomms.com/v1/airtime/purchase');
+$ch = curl_init('https://api.sendcomms.com/api/v1/airtime/purchase');
 
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
@@ -214,7 +214,7 @@ curl_close($ch);
 echo $response;`
   },
   data: {
-    curl: `curl -X POST https://api.sendcomms.com/v1/data/purchase \\
+    curl: `curl -X POST https://api.sendcomms.com/api/v1/data/purchase \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -224,7 +224,7 @@ echo $response;`
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
-const response = await fetch('https://api.sendcomms.com/v1/data/purchase', {
+const response = await fetch('https://api.sendcomms.com/api/v1/data/purchase', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -242,7 +242,7 @@ console.log(result);`,
     python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/data/purchase',
+    'https://api.sendcomms.com/api/v1/data/purchase',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -256,7 +256,7 @@ response = requests.post(
 
 print(response.json())`,
     php: `<?php
-$ch = curl_init('https://api.sendcomms.com/v1/data/purchase');
+$ch = curl_init('https://api.sendcomms.com/api/v1/data/purchase');
 
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
@@ -458,7 +458,7 @@ export default function QuickStartPage() {
               <span className="text-[10px] text-gray-500 uppercase tracking-wider">Register Webhook</span>
             </div>
             <pre className="p-3 overflow-x-auto text-xs">
-              <code className="text-gray-300">{`curl -X POST https://api.sendcomms.com/v1/webhooks \\
+              <code className="text-gray-300">{`curl -X POST https://api.sendcomms.com/api/v1/webhooks \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{

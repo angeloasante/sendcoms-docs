@@ -7,7 +7,7 @@ type Language = 'curl' | 'nodejs' | 'python' | 'php';
 
 const codeExamples: Record<Language, string> = {
   curl: `curl -X POST \\
-  https://api.sendcomms.com/v1/email/send \\
+  https://api.sendcomms.com/api/v1/email/send \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -19,7 +19,7 @@ const codeExamples: Record<Language, string> = {
   nodejs: `import axios from 'axios';
 
 const response = await axios.post(
-  'https://api.sendcomms.com/v1/email/send',
+  'https://api.sendcomms.com/api/v1/email/send',
   {
     to: 'user@example.com',
     subject: 'Welcome to our platform!',
@@ -37,7 +37,7 @@ const response = await axios.post(
 console.log(response.data);
 
 // Using fetch
-const res = await fetch('https://api.sendcomms.com/v1/email/send', {
+const res = await fetch('https://api.sendcomms.com/api/v1/email/send', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -52,7 +52,7 @@ const res = await fetch('https://api.sendcomms.com/v1/email/send', {
   python: `import requests
 
 response = requests.post(
-    'https://api.sendcomms.com/v1/email/send',
+    'https://api.sendcomms.com/api/v1/email/send',
     headers={
         'Authorization': 'Bearer YOUR_API_KEY',
         'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ import httpx
 
 async with httpx.AsyncClient() as client:
     response = await client.post(
-        'https://api.sendcomms.com/v1/email/send',
+        'https://api.sendcomms.com/api/v1/email/send',
         headers={'Authorization': 'Bearer YOUR_API_KEY'},
         json={
             'to': 'user@example.com',
@@ -92,7 +92,7 @@ $data = [
 ];
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => 'https://api.sendcomms.com/v1/email/send',
+    CURLOPT_URL => 'https://api.sendcomms.com/api/v1/email/send',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => json_encode($data),
