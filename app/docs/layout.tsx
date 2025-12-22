@@ -14,6 +14,8 @@ export default function DocsLayout({
   const isDataSection = pathname.startsWith('/docs/api/data');
   const [emailDropdownOpen, setEmailDropdownOpen] = useState(isEmailSection);
   const [dataDropdownOpen, setDataDropdownOpen] = useState(isDataSection);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Auto-open dropdown when navigating to email section
   useEffect(() => {
@@ -29,24 +31,313 @@ export default function DocsLayout({
     }
   }, [isDataSection]);
 
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [sidebarOpen]);
+
   const isActive = (path: string) => pathname === path;
+
+  // Sidebar content component
+  const SidebarContent = ({ collapsed = false }: { collapsed?: boolean }) => (
+    <>
+      {!collapsed && (
+        <div className="p-4 border-b border-white/5">
+          <div className="relative">
+            <input type="text" placeholder="Jump to..." className="w-full bg-[#16181b] border border-white/5 rounded-md px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-blue-500/50" />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">⌘ K</span>
+          </div>
+        </div>
+      )}
+
+      <nav className={`flex-1 overflow-y-auto p-4 space-y-1 ${collapsed ? 'px-2' : ''}`}>
+        <div className="pb-4">
+          {!collapsed && <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-2 px-2">Overview</h3>}
+          <Link 
+            href="/docs" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs') 
+                ? 'text-blue-400 bg-blue-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Introduction' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            {!collapsed && <span>Introduction</span>}
+          </Link>
+          <Link 
+            href="/docs/quickstart" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/quickstart') 
+                ? 'text-blue-400 bg-blue-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Quick Start' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            {!collapsed && <span>Quick Start</span>}
+          </Link>
+          <Link 
+            href="/docs/authentication" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors text-gray-400 hover:text-white hover:bg-white/5 ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Authentication' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+            {!collapsed && <span>Authentication</span>}
+          </Link>
+          <Link 
+            href="/docs/rate-limits" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors text-gray-400 hover:text-white hover:bg-white/5 ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Rate Limits' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {!collapsed && <span>Rate Limits</span>}
+          </Link>
+        </div>
+
+        {/* Email API */}
+        <div>
+          <button 
+            onClick={() => !collapsed && setEmailDropdownOpen(!emailDropdownOpen)}
+            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm font-medium rounded transition-colors ${isEmailSection || emailDropdownOpen ? 'text-blue-400' : 'text-gray-400 hover:text-white hover:bg-white/5'} ${collapsed ? 'justify-center' : 'justify-between'}`}
+            title={collapsed ? 'Email API' : undefined}
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              {!collapsed && <span>Email API</span>}
+            </div>
+            {!collapsed && (
+              <svg className={`w-4 h-4 transition-transform duration-200 ${emailDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            )}
+          </button>
+          
+          {!collapsed && (
+            <div className={`overflow-hidden transition-all duration-200 ${emailDropdownOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
+                <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
+                <Link 
+                  href="/docs/api/email" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/email') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Send Email
+                </Link>
+                <Link 
+                  href="/docs/api/email/batch" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/email/batch') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Batch Send
+                </Link>
+                <Link 
+                  href="/docs/api/email/webhooks" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/email/webhooks') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Webhooks
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Data Bundles API */}
+        <div className="pt-2">
+          <button 
+            onClick={() => !collapsed && setDataDropdownOpen(!dataDropdownOpen)}
+            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm font-medium rounded transition-colors ${isDataSection || dataDropdownOpen ? 'text-green-400' : 'text-gray-400 hover:text-white hover:bg-white/5'} ${collapsed ? 'justify-center' : 'justify-between'}`}
+            title={collapsed ? 'Data Bundles API' : undefined}
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+              </svg>
+              {!collapsed && <span>Data Bundles API</span>}
+            </div>
+            {!collapsed && (
+              <svg className={`w-4 h-4 transition-transform duration-200 ${dataDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            )}
+          </button>
+          
+          {!collapsed && (
+            <div className={`overflow-hidden transition-all duration-200 ${dataDropdownOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
+                <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
+                <Link 
+                  href="/docs/api/data" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/data') 
+                      ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  List Packages
+                </Link>
+                <Link 
+                  href="/docs/api/data/purchase" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/data/purchase') 
+                      ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Purchase Data
+                </Link>
+                <Link 
+                  href="/docs/api/data/status" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/data/status') 
+                      ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Check Status
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Coming Soon */}
+        <div className="pt-4">
+          <button 
+            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors ${collapsed ? 'justify-center' : 'justify-between'}`}
+            title={collapsed ? 'SMS API (Coming Soon)' : undefined}
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              {!collapsed && <span>SMS API</span>}
+            </div>
+            {!collapsed && <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Soon</span>}
+          </button>
+        </div>
+
+        <div className="pt-2">
+          <button 
+            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors ${collapsed ? 'justify-center' : 'justify-between'}`}
+            title={collapsed ? 'Airtime API (Coming Soon)' : undefined}
+          >
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {!collapsed && <span>Airtime API</span>}
+            </div>
+            {!collapsed && <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Soon</span>}
+          </button>
+        </div>
+      </nav>
+
+      {/* Sidebar Footer */}
+      <div className="p-4 border-t border-white/5">
+        {collapsed ? (
+          <div className="flex justify-center">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" title="All systems operational"></span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            All systems operational
+          </div>
+        )}
+      </div>
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-[#0b0c0e] text-[#e5e5e5] antialiased">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar Sheet */}
+      <aside className={`fixed inset-y-0 left-0 w-[280px] bg-[#0b0c0e] border-r border-white/5 z-50 flex flex-col transform transition-transform duration-300 ease-in-out lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        {/* Mobile Sidebar Header */}
+        <div className="h-16 border-b border-white/5 flex items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            </svg>
+            <span className="text-lg font-bold tracking-tight text-white">SendComms</span>
+          </div>
+          <button 
+            onClick={() => setSidebarOpen(false)}
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+          >
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <SidebarContent collapsed={false} />
+      </aside>
+
       {/* Top Navigation Bar */}
-      <header className="h-16 border-b border-white/5 bg-[#0b0c0e] flex items-center justify-between px-6 sticky top-0 z-50">
-        <div className="flex items-center gap-8">
+      <header className="h-16 border-b border-white/5 bg-[#0b0c0e] flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
+        <div className="flex items-center gap-4 lg:gap-8">
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors lg:hidden"
+            aria-label="Open menu"
+          >
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/docs" className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
               </svg>
-              <span className="text-lg font-bold tracking-tight text-white">SendComms</span>
+              <span className="text-lg font-bold tracking-tight text-white hidden sm:inline">SendComms</span>
             </Link>
-            <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#1c1e21] text-gray-400 border border-white/5">v1.0.0</span>
+            <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#1c1e21] text-gray-400 border border-white/5 hidden sm:inline">v1.0.0</span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             <Link href="/docs" className={`px-4 py-1.5 text-sm font-medium transition-colors ${pathname === '/docs' ? 'text-blue-400 bg-[#151b28] rounded-full border border-blue-500/10' : 'text-gray-400 hover:text-white'}`}>Guides</Link>
             <Link href="/docs/api/email" className={`px-4 py-1.5 text-sm font-medium transition-colors ${isEmailSection ? 'text-blue-400 bg-[#151b28] rounded-full border border-blue-500/10' : 'text-gray-400 hover:text-white'}`}>API Reference</Link>
             <Link href="/docs/sdks" className="px-4 py-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors">SDKs</Link>
@@ -54,8 +345,8 @@ export default function DocsLayout({
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative hidden lg:block group">
+        <div className="flex items-center gap-2 lg:gap-4">
+          <div className="relative hidden xl:block group">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -67,173 +358,57 @@ export default function DocsLayout({
             </div>
           </div>
           
-          <Link href="/dashboard" className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors">
+          <Link href="/dashboard" className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 px-3 lg:px-4 rounded-lg transition-colors">
             Dashboard
           </Link>
         </div>
       </header>
 
       <div className="flex">
-        {/* Left Sidebar */}
-        <aside className="w-[280px] bg-[#0b0c0e] border-r border-white/5 h-[calc(100vh-64px)] sticky top-16 hidden md:flex flex-col overflow-hidden">
-          <div className="p-4 border-b border-white/5">
-            <div className="relative">
-              <input type="text" placeholder="Jump to..." className="w-full bg-[#16181b] border border-white/5 rounded-md px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-blue-500/50" />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">⌘ K</span>
-            </div>
-          </div>
+        {/* Sidebar Toggle Button - Outside sidebar */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="fixed left-0 top-1/2 -translate-y-1/2 z-40 hidden lg:flex items-center justify-center w-6 h-12 bg-[#1c1e21] border border-white/10 border-l-0 rounded-r-lg hover:bg-[#252729] transition-all shadow-lg"
+          style={{ left: sidebarCollapsed ? '60px' : '280px' }}
+          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          <svg className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${sidebarCollapsed ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
 
-          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-            <div className="pb-4">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-2 px-2">Overview</h3>
-              <Link 
-                href="/docs" 
-                className={`block px-2 py-1.5 text-sm rounded transition-colors ${
-                  isActive('/docs') 
-                    ? 'text-blue-400 bg-blue-500/10 font-medium' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Introduction
-              </Link>
-              <Link 
-                href="/docs/quickstart" 
-                className={`block px-2 py-1.5 text-sm rounded transition-colors ${
-                  isActive('/docs/quickstart') 
-                    ? 'text-blue-400 bg-blue-500/10 font-medium' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Quick Start
-              </Link>
-              <Link href="/docs/authentication" className="block px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors">Authentication</Link>
-              <Link href="/docs/rate-limits" className="block px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors">Rate Limits</Link>
-            </div>
-
-            <div>
-              <button 
-                onClick={() => setEmailDropdownOpen(!emailDropdownOpen)}
-                className={`flex items-center justify-between w-full px-2 py-1.5 text-sm font-medium rounded transition-colors ${isEmailSection || emailDropdownOpen ? 'text-blue-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-              >
-                Email API
-                <svg className={`w-4 h-4 transition-transform ${emailDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              
-              {emailDropdownOpen && (
-                <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
-                  <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
-                  <Link 
-                    href="/docs/api/email" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/email') 
-                        ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    Send Email
-                  </Link>
-                  <Link 
-                    href="/docs/api/email/batch" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/email/batch') 
-                        ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    Batch Send
-                  </Link>
-                  <Link 
-                    href="/docs/api/email/webhooks" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/email/webhooks') 
-                        ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    Webhooks
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            <div className="pt-2">
-              <button 
-                onClick={() => setDataDropdownOpen(!dataDropdownOpen)}
-                className={`flex items-center justify-between w-full px-2 py-1.5 text-sm font-medium rounded transition-colors ${isDataSection || dataDropdownOpen ? 'text-green-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-              >
-                Data Bundles API
-                <svg className={`w-4 h-4 transition-transform ${dataDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              
-              {dataDropdownOpen && (
-                <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
-                  <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
-                  <Link 
-                    href="/docs/api/data" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/data') 
-                        ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    List Packages
-                  </Link>
-                  <Link 
-                    href="/docs/api/data/purchase" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/data/purchase') 
-                        ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    Purchase Data
-                  </Link>
-                  <Link 
-                    href="/docs/api/data/status" 
-                    className={`block px-3 py-1.5 text-sm transition-colors border-l ${
-                      isActive('/docs/api/data/status') 
-                        ? 'text-green-400 bg-green-500/5 font-medium border-green-500' 
-                        : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
-                    }`}
-                  >
-                    Check Status
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            <div className="pt-4">
-              <button className="flex items-center justify-between w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors">
-                SMS API
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Soon</span>
-              </button>
-            </div>
-
-            <div className="pt-2">
-              <button className="flex items-center justify-between w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors">
-                Airtime API
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Soon</span>
-              </button>
-            </div>
-          </nav>
-
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-white/5">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <span className="w-2 h-2 rounded-full bg-green-400"></span>
-              All systems operational
-            </div>
-          </div>
+        {/* Desktop Sidebar */}
+        <aside className={`relative bg-[#0b0c0e] border-r border-white/5 h-[calc(100vh-64px)] sticky top-16 hidden lg:flex flex-col overflow-hidden transition-all duration-300 ${sidebarCollapsed ? 'w-[60px]' : 'w-[280px]'}`}>
+          <SidebarContent collapsed={sidebarCollapsed} />
         </aside>
 
         {/* Center Content */}
         <main className="flex-1 overflow-y-auto min-h-[calc(100vh-64px)]">
-          <div className="max-w-4xl mx-auto px-8 py-10 pb-32">
+          <div className="max-w-4xl mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-24">
             {children}
+            
+            {/* Footer */}
+            <footer className="mt-16 pt-8 border-t border-white/5">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <div className="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                  </svg>
+                  <span>SendComms Documentation</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span>Developed by</span>
+                  <a 
+                    href="https://angeloasante.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                  >
+                    Travis Moore (Angelo Asante)
+                  </a>
+                </div>
+              </div>
+            </footer>
           </div>
         </main>
       </div>
