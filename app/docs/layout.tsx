@@ -296,9 +296,7 @@ export default function DocsLayout({
         {/* Mobile Sidebar Header */}
         <div className="h-16 border-b border-white/5 flex items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
-              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-            </svg>
+            <img src="/logo.png" alt="SendComms" className="w-12 h-12 object-contain" />
             <span className="text-lg font-bold tracking-tight text-white">SendComms</span>
           </div>
           <button 
@@ -329,9 +327,7 @@ export default function DocsLayout({
 
           <div className="flex items-center gap-3">
             <Link href="/docs" className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
-                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-              </svg>
+              <img src="/logo.png" alt="SendComms" className="w-12 h-12 object-contain" />
               <span className="text-lg font-bold tracking-tight text-white hidden sm:inline">SendComms</span>
             </Link>
             <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#1c1e21] text-gray-400 border border-white/5 hidden sm:inline">v1.0.0</span>
@@ -391,9 +387,7 @@ export default function DocsLayout({
             <footer className="mt-16 pt-8 border-t border-white/5">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <div className="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
-                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                  </svg>
+                  <img src="/logo.png" alt="SendComms" className="w-12 h-12 object-contain" />
                   <span>SendComms Documentation</span>
                 </div>
                 <div className="flex items-center gap-1">

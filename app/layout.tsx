@@ -11,6 +11,15 @@ export const metadata: Metadata = {
   title: "SendComms API Documentation",
   description: "API documentation for SendComms - Email, SMS, Data Bundles, and Airtime APIs for Africa",
   keywords: ["API", "Email", "SMS", "Data Bundles", "Airtime", "Africa", "Ghana", "Documentation"],
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.ico',
+  },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: "SendComms API Documentation",
     description: "Build powerful communication apps with SendComms APIs",
