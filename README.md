@@ -1,36 +1,205 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SendComms API Documentation
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16.1.0-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
+</p>
 
-First, run the development server:
+<p align="center">
+  <strong>Modern, beautiful API documentation for SendComms - Ghana's premier communications platform</strong>
+</p>
+
+<p align="center">
+  <a href="https://docs.sendcomms.com">Live Documentation</a> •
+  <a href="#features">Features</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#deployment">Deployment</a>
+</p>
+
+---
+
+## 📖 Overview
+
+SendComms API Documentation is a standalone, static documentation site built with Next.js 16. It provides comprehensive guides and API references for integrating with the SendComms platform, which offers:
+
+- **📧 Email API** - Send transactional and marketing emails
+- **📱 Data Bundles API** - Purchase mobile data bundles for all major Ghanaian networks
+- **💬 SMS API** *(Coming Soon)* - Send SMS messages
+- **📞 Airtime API** *(Coming Soon)* - Top up airtime
+
+## ✨ Features
+
+### Documentation Features
+- **Multi-language Code Examples** - cURL, Node.js, Python, and PHP examples for every endpoint
+- **Interactive Navigation** - Collapsible sidebar with section grouping
+- **Mobile Responsive** - Fully responsive design with slide-out mobile menu
+- **Dark Theme** - Easy on the eyes with a modern dark interface
+- **Search** - Quick keyboard navigation with ⌘K shortcut
+
+### Technical Features
+- **Static Site Generation** - Pre-rendered pages for optimal performance
+- **SEO Optimized** - Proper meta tags and structured content
+- **Zero Backend Dependencies** - Pure static hosting compatible
+- **TypeScript** - Full type safety throughout the codebase
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.17 or later
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/angeloasante/sendcoms-docs.git
+   cd sendcoms-docs
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+### Build for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This generates a static export in the `out/` directory, ready for deployment.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+sendcomms-docs/
+├── app/
+│   ├── docs/
+│   │   ├── layout.tsx          # Docs layout with sidebar & navigation
+│   │   ├── page.tsx            # Introduction page
+│   │   ├── quickstart/         # Quick start guide
+│   │   └── api/
+│   │       ├── email/          # Email API documentation
+│   │       │   ├── page.tsx    # Send Email endpoint
+│   │       │   ├── batch/      # Batch Send endpoint
+│   │       │   └── webhooks/   # Webhooks documentation
+│   │       └── data/           # Data Bundles API documentation
+│   │           ├── page.tsx    # List Packages endpoint
+│   │           ├── purchase/   # Purchase Data endpoint
+│   │           └── status/     # Check Status endpoint
+│   ├── layout.tsx              # Root layout
+│   ├── page.tsx                # Landing page (redirects to docs)
+│   └── globals.css             # Global styles
+├── public/                     # Static assets
+├── next.config.ts              # Next.js configuration
+├── tailwind.config.ts          # Tailwind CSS configuration
+├── vercel.json                 # Vercel deployment configuration
+└── package.json
+```
 
-## Learn More
+## 🌐 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Vercel (Recommended)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to GitHub
+2. Import the repository in [Vercel](https://vercel.com)
+3. Deploy with default settings
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Custom Domain Setup
 
-## Deploy on Vercel
+To use a custom domain like `docs.sendcomms.com`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Add your domain in Vercel project settings
+2. Configure DNS records:
+   - **CNAME**: `docs` → `cname.vercel-dns.com`
+   - Or **A Record**: `@` → Vercel's IP addresses
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Other Platforms
+
+The site can be deployed to any static hosting platform:
+
+- **Netlify**: Drop the `out/` folder or connect GitHub
+- **GitHub Pages**: Use the static export
+- **Cloudflare Pages**: Connect repository for automatic deployments
+- **AWS S3 + CloudFront**: Upload `out/` to S3 bucket
+
+## 🎨 Customization
+
+### Theme Colors
+
+The documentation uses a dark theme with the following color palette:
+
+| Element | Color | Hex |
+|---------|-------|-----|
+| Background | Dark | `#0b0c0e` |
+| Surface | Dark Gray | `#16181b` |
+| Primary | Blue | `#3b82f6` |
+| Success | Green | `#22c55e` |
+| Warning | Yellow | `#eab308` |
+| Text | Light Gray | `#e5e5e5` |
+
+### Adding New Pages
+
+1. Create a new folder under `app/docs/`
+2. Add a `page.tsx` file with your content
+3. Update the sidebar navigation in `app/docs/layout.tsx`
+
+## 📚 API Documentation Coverage
+
+### Email API
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/email/send` | POST | Send a single email |
+| `/api/v1/email/batch` | POST | Send batch emails |
+
+### Data Bundles API
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/data/packages` | GET | List available data packages |
+| `/api/v1/data/purchase` | POST | Purchase a data bundle |
+| `/api/v1/data/status/:id` | GET | Check transaction status |
+
+### Supported Networks (Data)
+- 🟡 MTN Ghana
+- 🔴 Vodafone Ghana
+- 🔵 AirtelTigo
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Travis Moore (Angelo Asante)**
+
+- Website: [angeloasante.com](https://angeloasante.com)
+- GitHub: [@angeloasante](https://github.com/angeloasante)
+
+---
+
+<p align="center">
+  Made with ❤️ in Ghana 🇬🇭
+</p>
