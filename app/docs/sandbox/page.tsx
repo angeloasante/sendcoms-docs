@@ -16,7 +16,7 @@ const sandboxExamples: Record<LanguageType, string> = {
   -H "Authorization: Bearer sc_test_YOUR_TEST_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "to": "+233248687065",
+    "to": "+233540800994",
     "message": "Hello from sandbox mode!"
   }'`,
   nodejs: `import fetch from 'node-fetch';
@@ -28,7 +28,7 @@ const response = await fetch('https://api.sendcomms.com/api/v1/sms/send', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    to: '+233248687065',
+    to: '+233540800994',
     message: 'Hello from sandbox mode!'
   }),
 });
@@ -49,7 +49,7 @@ response = requests.post(
         'Content-Type': 'application/json'
     },
     json={
-        'to': '+233248687065',
+        'to': '+233540800994',
         'message': 'Hello from sandbox mode!'
     }
 )
@@ -249,7 +249,7 @@ export default function SandboxPage() {
     "transaction_id": "sms_test_mji01l2o_g8pamf65",
     "message_id": "SMtest1c7pkfx8z",
     "status": "sent",
-    "to": "+233248687065",
+    "to": "+233540800994",
     "from": "SendComms",
     "message_length": 24,
     "segments": 1,

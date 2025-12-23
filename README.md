@@ -26,7 +26,7 @@ SendComms API Documentation is a standalone, static documentation site built wit
 
 - **📧 Email API** - Send transactional and marketing emails
 - **📱 Data Bundles API** - Purchase mobile data bundles for all major Ghanaian networks
-- **💬 SMS API** - Send SMS messages across 50+ African countries
+- **💬 SMS API** - Send SMS messages across 180+ countries
 - **📞 Airtime API** *(Coming Soon)* - Top up airtime
 - **🧪 Sandbox Mode** - Test your integration without charges
 
@@ -209,7 +209,7 @@ The documentation uses a dark theme with the following color palette:
 - 🔵 AirtelTigo
 
 ### SMS Regional Coverage
-- 🌍 Africa (50+ countries)
+- 🌍 Africa (180+ countries)
 - 🌎 North America
 - 🌍 Europe
 - 🌏 Asia Pacific

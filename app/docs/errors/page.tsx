@@ -67,7 +67,7 @@ const customerErrors = [
   "success": false,
   "error": {
     "code": "INVALID_PHONE_NUMBER",
-    "message": "Invalid phone number. Use E.164 format (e.g., +233248687065)"
+    "message": "Invalid phone number. Use E.164 format (e.g., +233540800994)"
   }
 }`
   },
