@@ -157,16 +157,16 @@ export default function DocsIntroPage() {
               <tr className="bg-[#0b0c0e] hover:bg-[#121316] transition-colors">
                 <td className="py-3 px-4 text-sm text-white font-medium">SMS</td>
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono text-xs">/api/v1/sms/send</td>
-                <td className="py-3 px-4"><span className="px-2 py-0.5 rounded text-xs bg-yellow-500/10 text-yellow-400">Coming Soon</span></td>
-              </tr>
-              <tr className="bg-[#0b0c0e] hover:bg-[#121316] transition-colors">
-                <td className="py-3 px-4 text-sm text-white font-medium">Airtime</td>
-                <td className="py-3 px-4 text-sm text-blue-400 font-mono text-xs">/api/v1/airtime/purchase</td>
-                <td className="py-3 px-4"><span className="px-2 py-0.5 rounded text-xs bg-yellow-500/10 text-yellow-400">Coming Soon</span></td>
+                <td className="py-3 px-4"><span className="px-2 py-0.5 rounded text-xs bg-green-500/10 text-green-400">Live</span></td>
               </tr>
               <tr className="bg-[#0b0c0e] hover:bg-[#121316] transition-colors">
                 <td className="py-3 px-4 text-sm text-white font-medium">Data Bundles</td>
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono text-xs">/api/v1/data/purchase</td>
+                <td className="py-3 px-4"><span className="px-2 py-0.5 rounded text-xs bg-green-500/10 text-green-400">Live</span></td>
+              </tr>
+              <tr className="bg-[#0b0c0e] hover:bg-[#121316] transition-colors">
+                <td className="py-3 px-4 text-sm text-white font-medium">Airtime</td>
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono text-xs">/api/v1/airtime/purchase</td>
                 <td className="py-3 px-4"><span className="px-2 py-0.5 rounded text-xs bg-yellow-500/10 text-yellow-400">Coming Soon</span></td>
               </tr>
             </tbody>
