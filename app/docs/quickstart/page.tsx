@@ -8,9 +8,9 @@ type LanguageType = 'curl' | 'nodejs' | 'python' | 'php';
 
 const services: { id: ServiceType; name: string; icon: string; status: 'live' | 'soon' }[] = [
   { id: 'email', name: 'Email', icon: '📧', status: 'live' },
-  { id: 'sms', name: 'SMS', icon: '💬', status: 'soon' },
+  { id: 'sms', name: 'SMS', icon: '💬', status: 'live' },
   { id: 'airtime', name: 'Airtime', icon: '📱', status: 'soon' },
-  { id: 'data', name: 'Data', icon: '📶', status: 'soon' },
+  { id: 'data', name: 'Data', icon: '📶', status: 'live' },
 ];
 
 const languages: { id: LanguageType; name: string }[] = [
@@ -218,9 +218,10 @@ echo $response;`
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "phone": "+2348012345678",
-    "bundle_id": "ng_mtn_1gb_30d",
-    "country": "NG"
+    "phone_number": "0248687065",
+    "network": "mtn",
+    "capacity_gb": 1,
+    "idempotency_key": "unique-order-id-123"
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
@@ -231,9 +232,10 @@ const response = await fetch('https://api.sendcomms.com/api/v1/data/purchase', {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    phone: '+2348012345678',
-    bundle_id: 'ng_mtn_1gb_30d',
-    country: 'NG'
+    phone_number: '0248687065',
+    network: 'mtn',
+    capacity_gb: 1,
+    idempotency_key: 'unique-order-id-123'
   }),
 });
 
@@ -248,9 +250,10 @@ response = requests.post(
         'Content-Type': 'application/json'
     },
     json={
-        'phone': '+2348012345678',
-        'bundle_id': 'ng_mtn_1gb_30d',
-        'country': 'NG'
+        'phone_number': '0248687065',
+        'network': 'mtn',
+        'capacity_gb': 1,
+        'idempotency_key': 'unique-order-id-123'
     }
 )
 
@@ -266,9 +269,10 @@ curl_setopt_array($ch, [
         'Content-Type: application/json'
     ],
     CURLOPT_POSTFIELDS => json_encode([
-        'phone' => '+2348012345678',
-        'bundle_id' => 'ng_mtn_1gb_30d',
-        'country' => 'NG'
+        'phone_number' => '0248687065',
+        'network' => 'mtn',
+        'capacity_gb' => 1,
+        'idempotency_key' => 'unique-order-id-123'
     ])
 ]);
 
@@ -314,11 +318,16 @@ const responseExamples: Record<ServiceType, string> = {
   data: `{
   "success": true,
   "data": {
-    "id": "data_jkl012mno",
-    "phone": "+2348012345678",
-    "bundle": "1GB - 30 Days",
-    "operator": "MTN Nigeria",
-    "status": "successful"
+    "transaction_id": "data_mjhw7md7_a8a05860a95c",
+    "status": "processing",
+    "phone_number": "0248687065",
+    "network": "mtn",
+    "capacity_gb": 1,
+    "price": {
+      "amount": 4.72,
+      "currency": "GHS"
+    },
+    "message": "Order placed successfully."
   }
 }`
 };
@@ -371,11 +380,32 @@ export default function QuickStartPage() {
             <h2 className="text-lg font-semibold text-white">Get Your API Key</h2>
           </div>
           <p className="text-gray-400 text-sm mb-3">
-            Sign up or log in to your dashboard to get your API key. You&apos;ll find it in the API Keys section.
+            Sign up or log in to your dashboard to get your API key. You can create either:
           </p>
-          <Link href="/dashboard/api-keys" className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-            Get API Key →
-          </Link>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="bg-[#0b0c0e] border border-amber-500/20 rounded p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-amber-400">🧪</span>
+                <code className="text-amber-400 text-xs font-semibold">sc_test_</code>
+              </div>
+              <p className="text-gray-500 text-[10px]">Test key for sandbox mode - no charges</p>
+            </div>
+            <div className="bg-[#0b0c0e] border border-blue-500/20 rounded p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-blue-400">🚀</span>
+                <code className="text-blue-400 text-xs font-semibold">sc_live_</code>
+              </div>
+              <p className="text-gray-500 text-[10px]">Live key for production - real messages</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard/api-keys" className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              Get API Key →
+            </Link>
+            <Link href="/docs/sandbox" className="text-amber-400 text-sm hover:underline">
+              Learn about sandbox mode
+            </Link>
+          </div>
         </div>
 
         {/* Step 2 */}
@@ -474,18 +504,32 @@ export default function QuickStartPage() {
       <div className="mt-10 p-5 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg">
         <h3 className="text-sm font-semibold text-white mb-3">Next Steps</h3>
         <div className="grid grid-cols-2 gap-3">
+          <Link href="/docs/sandbox" className="flex items-center gap-2 p-2 bg-[#0b0c0e] border border-amber-500/20 rounded hover:border-amber-500/40 transition-colors">
+            <span>🧪</span>
+            <div>
+              <p className="text-white font-medium text-xs">Sandbox Mode</p>
+              <p className="text-gray-500 text-[10px]">Test without charges</p>
+            </div>
+          </Link>
+          <Link href="/docs/authentication" className="flex items-center gap-2 p-2 bg-[#0b0c0e] border border-white/5 rounded hover:border-blue-500/30 transition-colors">
+            <span>🔑</span>
+            <div>
+              <p className="text-white font-medium text-xs">Authentication</p>
+              <p className="text-gray-500 text-[10px]">API keys & security</p>
+            </div>
+          </Link>
+          <Link href="/docs/rate-limits" className="flex items-center gap-2 p-2 bg-[#0b0c0e] border border-white/5 rounded hover:border-blue-500/30 transition-colors">
+            <span>⚡</span>
+            <div>
+              <p className="text-white font-medium text-xs">Rate Limits</p>
+              <p className="text-gray-500 text-[10px]">Limits & idempotency</p>
+            </div>
+          </Link>
           <Link href="/docs/api/email" className="flex items-center gap-2 p-2 bg-[#0b0c0e] border border-white/5 rounded hover:border-blue-500/30 transition-colors">
             <span>📧</span>
             <div>
               <p className="text-white font-medium text-xs">Email API Reference</p>
               <p className="text-gray-500 text-[10px]">Full documentation</p>
-            </div>
-          </Link>
-          <Link href="/docs/api/email/webhooks" className="flex items-center gap-2 p-2 bg-[#0b0c0e] border border-white/5 rounded hover:border-blue-500/30 transition-colors">
-            <span>🔔</span>
-            <div>
-              <p className="text-white font-medium text-xs">Webhooks Guide</p>
-              <p className="text-gray-500 text-[10px]">Real-time events</p>
             </div>
           </Link>
         </div>
@@ -499,8 +543,8 @@ export default function QuickStartPage() {
           </svg>
           Introduction
         </Link>
-        <Link href="/docs/api/email" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">
-          Email API
+        <Link href="/docs/authentication" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">
+          Authentication
           <svg className="w-4 h-4 text-gray-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

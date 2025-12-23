@@ -26,8 +26,9 @@ SendComms API Documentation is a standalone, static documentation site built wit
 
 - **📧 Email API** - Send transactional and marketing emails
 - **📱 Data Bundles API** - Purchase mobile data bundles for all major Ghanaian networks
-- **💬 SMS API** *(Coming Soon)* - Send SMS messages
+- **💬 SMS API** - Send SMS messages across 50+ African countries
 - **📞 Airtime API** *(Coming Soon)* - Top up airtime
+- **🧪 Sandbox Mode** - Test your integration without charges
 
 ## ✨ Features
 
@@ -37,12 +38,30 @@ SendComms API Documentation is a standalone, static documentation site built wit
 - **Mobile Responsive** - Fully responsive design with slide-out mobile menu
 - **Dark Theme** - Easy on the eyes with a modern dark interface
 - **Search** - Quick keyboard navigation with ⌘K shortcut
+- **Sandbox Mode Guide** - Complete testing documentation with real examples
 
 ### Technical Features
 - **Static Site Generation** - Pre-rendered pages for optimal performance
 - **SEO Optimized** - Proper meta tags and structured content
 - **Zero Backend Dependencies** - Pure static hosting compatible
 - **TypeScript** - Full type safety throughout the codebase
+
+## 🧪 Sandbox Mode
+
+SendComms supports **Sandbox Mode** for testing integrations without charges:
+
+| Key Type | Prefix | Behavior |
+|----------|--------|----------|
+| **Test** | `sc_test_` | Returns mock responses, no charges, no real messages sent |
+| **Live** | `sc_live_` | Sends real messages, charges balance, affects production stats |
+
+### Sandbox Features
+- ✅ Full API validation (same as live)
+- ✅ Realistic mock responses with pricing
+- ✅ Transaction logging for debugging
+- ✅ No balance deductions
+- ✅ No real messages sent
+- ✅ Supports SMS, Email, and Data APIs
 
 ## 🚀 Getting Started
 
@@ -91,11 +110,18 @@ sendcomms-docs/
 │   │   ├── layout.tsx          # Docs layout with sidebar & navigation
 │   │   ├── page.tsx            # Introduction page
 │   │   ├── quickstart/         # Quick start guide
+│   │   ├── authentication/     # Authentication documentation
+│   │   ├── rate-limits/        # Rate limits documentation
+│   │   ├── errors/             # Error handling documentation
+│   │   ├── sandbox/            # Sandbox mode documentation
 │   │   └── api/
 │   │       ├── email/          # Email API documentation
 │   │       │   ├── page.tsx    # Send Email endpoint
 │   │       │   ├── batch/      # Batch Send endpoint
 │   │       │   └── webhooks/   # Webhooks documentation
+│   │       ├── sms/            # SMS API documentation
+│   │       │   ├── page.tsx    # Send SMS endpoint
+│   │       │   └── pricing/    # SMS pricing by region
 │   │       └── data/           # Data Bundles API documentation
 │   │           ├── page.tsx    # List Packages endpoint
 │   │           ├── purchase/   # Purchase Data endpoint
@@ -160,22 +186,33 @@ The documentation uses a dark theme with the following color palette:
 ## 📚 API Documentation Coverage
 
 ### Email API
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/email/send` | POST | Send a single email |
-| `/api/v1/email/batch` | POST | Send batch emails |
+| Endpoint | Method | Description | Sandbox |
+|----------|--------|-------------|---------|
+| `/api/v1/email/send` | POST | Send a single email | ✅ |
+| `/api/v1/email/batch` | POST | Send batch emails | ✅ |
+
+### SMS API
+| Endpoint | Method | Description | Sandbox |
+|----------|--------|-------------|---------|
+| `/api/v1/sms/send` | POST | Send SMS to any country | ✅ |
 
 ### Data Bundles API
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/data/packages` | GET | List available data packages |
-| `/api/v1/data/purchase` | POST | Purchase a data bundle |
-| `/api/v1/data/status/:id` | GET | Check transaction status |
+| Endpoint | Method | Description | Sandbox |
+|----------|--------|-------------|---------|
+| `/api/v1/data/packages` | GET | List available data packages | ✅ |
+| `/api/v1/data/purchase` | POST | Purchase a data bundle | ✅ |
+| `/api/v1/data/status/:id` | GET | Check transaction status | ✅ |
 
 ### Supported Networks (Data)
 - 🟡 MTN Ghana
 - 🔴 Vodafone Ghana
 - 🔵 AirtelTigo
+
+### SMS Regional Coverage
+- 🌍 Africa (50+ countries)
+- 🌎 North America
+- 🌍 Europe
+- 🌏 Asia Pacific
 
 ## 🤝 Contributing
 

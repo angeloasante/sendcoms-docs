@@ -35,6 +35,14 @@ export default function DocsIntroPage() {
             <p className="text-gray-500 text-xs">Get up and running in under 5 minutes</p>
           </Link>
 
+          <Link href="/docs/sandbox" className="group p-4 bg-[#121316] border border-amber-500/20 rounded-lg hover:border-amber-500/50 transition-all">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-lg">🧪</span>
+              <h3 className="text-white font-semibold text-sm">Sandbox Mode</h3>
+            </div>
+            <p className="text-gray-500 text-xs">Test your integration without charges</p>
+          </Link>
+
           <Link href="/docs/api/email" className="group p-4 bg-[#121316] border border-white/10 rounded-lg hover:border-blue-500/50 transition-all">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-lg">📧</span>
@@ -191,15 +199,20 @@ export default function DocsIntroPage() {
             <span className="text-gray-500">Authorization:</span> <span className="text-green-400">Bearer</span> <span className="text-blue-400">YOUR_API_KEY</span>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-[#0b0c0e] border border-white/5 rounded p-3">
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Production Keys</p>
-              <code className="text-blue-400 text-xs">ac_live_</code><span className="text-gray-400 text-xs">+ 48 hex chars</span>
+            <div className="bg-[#0b0c0e] border border-blue-500/20 rounded p-3">
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Live Keys (Production)</p>
+              <code className="text-blue-400 text-xs">sc_live_</code><span className="text-gray-400 text-xs">...</span>
+              <p className="text-gray-500 text-[10px] mt-1">Real messages, real charges</p>
             </div>
-            <div className="bg-[#0b0c0e] border border-white/5 rounded p-3">
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Test Keys</p>
-              <code className="text-yellow-400 text-xs">ac_test_</code><span className="text-gray-400 text-xs">+ 48 hex chars</span>
+            <div className="bg-[#0b0c0e] border border-amber-500/20 rounded p-3">
+              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Test Keys (Sandbox)</p>
+              <code className="text-amber-400 text-xs">sc_test_</code><span className="text-gray-400 text-xs">...</span>
+              <p className="text-gray-500 text-[10px] mt-1">Mock responses, no charges</p>
             </div>
           </div>
+          <p className="text-gray-500 text-xs mt-3">
+            <Link href="/docs/sandbox" className="text-amber-400 hover:underline">Learn more about sandbox mode →</Link>
+          </p>
         </div>
       </div>
 

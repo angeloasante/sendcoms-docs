@@ -12,8 +12,11 @@ export default function DocsLayout({
   const pathname = usePathname();
   const isEmailSection = pathname.startsWith('/docs/api/email');
   const isDataSection = pathname.startsWith('/docs/api/data');
+  const isSMSSection = pathname.startsWith('/docs/api/sms');
+  const isSandboxSection = pathname.startsWith('/docs/sandbox');
   const [emailDropdownOpen, setEmailDropdownOpen] = useState(isEmailSection);
   const [dataDropdownOpen, setDataDropdownOpen] = useState(isDataSection);
+  const [smsDropdownOpen, setSmsDropdownOpen] = useState(isSMSSection);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -30,6 +33,13 @@ export default function DocsLayout({
       setDataDropdownOpen(true);
     }
   }, [isDataSection]);
+
+  // Auto-open dropdown when navigating to sms section
+  useEffect(() => {
+    if (isSMSSection) {
+      setSmsDropdownOpen(true);
+    }
+  }, [isSMSSection]);
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -53,15 +63,6 @@ export default function DocsLayout({
   // Sidebar content component
   const SidebarContent = ({ collapsed = false }: { collapsed?: boolean }) => (
     <>
-      {!collapsed && (
-        <div className="p-4 border-b border-white/5">
-          <div className="relative">
-            <input type="text" placeholder="Jump to..." className="w-full bg-[#16181b] border border-white/5 rounded-md px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-blue-500/50" />
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">⌘ K</span>
-          </div>
-        </div>
-      )}
-
       <nav className={`flex-1 overflow-y-auto p-4 space-y-1 ${collapsed ? 'px-2' : ''}`}>
         <div className="pb-4">
           {!collapsed && <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-2 px-2">Overview</h3>}
@@ -95,7 +96,11 @@ export default function DocsLayout({
           </Link>
           <Link 
             href="/docs/authentication" 
-            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors text-gray-400 hover:text-white hover:bg-white/5 ${collapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/authentication') 
+                ? 'text-blue-400 bg-blue-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
             title={collapsed ? 'Authentication' : undefined}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,13 +110,45 @@ export default function DocsLayout({
           </Link>
           <Link 
             href="/docs/rate-limits" 
-            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors text-gray-400 hover:text-white hover:bg-white/5 ${collapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/rate-limits') 
+                ? 'text-blue-400 bg-blue-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
             title={collapsed ? 'Rate Limits' : undefined}
           >
             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {!collapsed && <span>Rate Limits</span>}
+          </Link>
+          <Link 
+            href="/docs/errors" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/errors') 
+                ? 'text-blue-400 bg-blue-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Error Handling' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            {!collapsed && <span>Error Handling</span>}
+          </Link>
+          <Link 
+            href="/docs/sandbox" 
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/sandbox') || isSandboxSection
+                ? 'text-amber-400 bg-amber-500/10 font-medium' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Sandbox Mode' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            {!collapsed && <span>Sandbox Mode</span>}
           </Link>
         </div>
 
@@ -233,11 +270,12 @@ export default function DocsLayout({
           )}
         </div>
 
-        {/* Coming Soon */}
-        <div className="pt-4">
+        {/* SMS API */}
+        <div className="pt-2">
           <button 
-            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors ${collapsed ? 'justify-center' : 'justify-between'}`}
-            title={collapsed ? 'SMS API (Coming Soon)' : undefined}
+            onClick={() => !collapsed && setSmsDropdownOpen(!smsDropdownOpen)}
+            className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm font-medium rounded transition-colors ${isSMSSection || smsDropdownOpen ? 'text-purple-400' : 'text-gray-400 hover:text-white hover:bg-white/5'} ${collapsed ? 'justify-center' : 'justify-between'}`}
+            title={collapsed ? 'SMS API' : undefined}
           >
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,11 +283,44 @@ export default function DocsLayout({
               </svg>
               {!collapsed && <span>SMS API</span>}
             </div>
-            {!collapsed && <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Soon</span>}
+            {!collapsed && (
+              <svg className={`w-4 h-4 transition-transform duration-200 ${smsDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            )}
           </button>
+          
+          {!collapsed && (
+            <div className={`overflow-hidden transition-all duration-200 ${smsDropdownOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
+                <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
+                <Link 
+                  href="/docs/api/sms" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/sms') 
+                      ? 'text-purple-400 bg-purple-500/5 font-medium border-purple-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Send SMS
+                </Link>
+                <Link 
+                  href="/docs/api/sms/pricing" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/sms/pricing') 
+                      ? 'text-purple-400 bg-purple-500/5 font-medium border-purple-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Pricing
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="pt-2">
+        {/* Coming Soon */}
+        <div className="pt-4">
           <button 
             className={`flex items-center gap-2 w-full px-2 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded transition-colors ${collapsed ? 'justify-center' : 'justify-between'}`}
             title={collapsed ? 'Airtime API (Coming Soon)' : undefined}
@@ -332,28 +403,9 @@ export default function DocsLayout({
             </Link>
             <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#1c1e21] text-gray-400 border border-white/5 hidden sm:inline">v1.0.0</span>
           </div>
-
-          <nav className="hidden lg:flex items-center gap-1">
-            <Link href="/docs" className={`px-4 py-1.5 text-sm font-medium transition-colors ${pathname === '/docs' ? 'text-blue-400 bg-[#151b28] rounded-full border border-blue-500/10' : 'text-gray-400 hover:text-white'}`}>Guides</Link>
-            <Link href="/docs/api/email" className={`px-4 py-1.5 text-sm font-medium transition-colors ${isEmailSection ? 'text-blue-400 bg-[#151b28] rounded-full border border-blue-500/10' : 'text-gray-400 hover:text-white'}`}>API Reference</Link>
-            <Link href="/docs/sdks" className="px-4 py-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors">SDKs</Link>
-            <Link href="/pricing" className="px-4 py-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors">Pricing</Link>
-          </nav>
         </div>
 
-        <div className="flex items-center gap-2 lg:gap-4">
-          <div className="relative hidden xl:block group">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input type="text" placeholder="Search docs..." className="bg-[#16181b] border border-white/5 text-sm rounded-lg pl-9 pr-12 py-1.5 w-64 text-gray-300 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all placeholder:text-gray-600" />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
-              <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-gray-700 bg-gray-800 px-1.5 font-mono text-[10px] font-medium text-gray-400">
-                <span className="text-xs">⌘</span>K
-              </kbd>
-            </div>
-          </div>
-          
+        <div className="flex items-center gap-2">
           <Link href="/dashboard" className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 px-3 lg:px-4 rounded-lg transition-colors">
             Dashboard
           </Link>

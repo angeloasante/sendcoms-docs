@@ -264,6 +264,8 @@ export default function SendEmailDocsPage() {
           <span className="text-sm text-gray-400">Unauthorized</span>
           <span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-mono border border-red-500/20 ml-4">402</span>
           <span className="text-sm text-gray-400">No balance</span>
+          <span className="bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded text-xs font-mono border border-yellow-500/20 ml-4">429</span>
+          <span className="text-sm text-gray-400">Rate limit exceeded</span>
         </div>
       </div>
 
