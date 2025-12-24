@@ -307,10 +307,6 @@ export default function PurchaseDataDocsPage() {
     "phone_number": "0540800994",
     "network": "mtn",
     "capacity_gb": 1,
-    "price": {
-      "amount": 4.72,
-      "currency": "GHS"
-    },
     "provider_reference": "TRX-60493ef0-bd7b-4798-8c5c-a75db2da186d",
     "order_reference": "MN-AO7732GP",
     "processing_method": "manual",

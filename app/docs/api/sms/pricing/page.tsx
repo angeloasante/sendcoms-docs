@@ -142,11 +142,10 @@ export default function SMSPricingDocsPage() {
         </p>
       </div>
 
-      {/* Pricing Overview */}
+      {/* Pricing Overview - Commented out
       <div className="mb-8">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Pricing by Region</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Africa Pricing */}
           <div className="bg-[#16181b] border border-purple-500/20 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-2xl">🌍</span>
@@ -179,7 +178,6 @@ export default function SMSPricingDocsPage() {
             </div>
           </div>
 
-          {/* Global Pricing */}
           <div className="bg-[#16181b] border border-blue-500/20 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-2xl">🌐</span>
@@ -214,6 +212,7 @@ export default function SMSPricingDocsPage() {
         </div>
         <p className="text-xs text-gray-500 mt-3">* All prices include 15% service margin. Prices are per SMS segment.</p>
       </div>
+      */}
 
       {/* Language Selector */}
       <div className="mb-6">
@@ -305,6 +304,7 @@ export default function SMSPricingDocsPage() {
         </div>
       </div>
 
+      {/* Response section commented out
       <div className="mb-12">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Response</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
@@ -342,8 +342,10 @@ export default function SMSPricingDocsPage() {
           </pre>
         </div>
       </div>
+      */}
 
-      {/* Pricing Table */}
+      {/* Pricing Table commented out}
+      {/* Pricing Table commented out
       <div className="mb-12">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Full Pricing Table</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg overflow-hidden">
@@ -409,6 +411,7 @@ export default function SMSPricingDocsPage() {
           </table>
         </div>
       </div>
+      */}
 
       <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-12">
         <Link href="/docs/api/sms" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">

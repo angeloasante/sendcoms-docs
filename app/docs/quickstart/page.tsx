@@ -300,8 +300,7 @@ const responseExamples: Record<ServiceType, string> = {
     "id": "sms_def456uvw",
     "to": "+2348012345678",
     "status": "sent",
-    "segments": 1,
-    "cost": 0.03
+    "segments": 1
   }
 }`,
   airtime: `{
@@ -323,10 +322,6 @@ const responseExamples: Record<ServiceType, string> = {
     "phone_number": "0248687065",
     "network": "mtn",
     "capacity_gb": 1,
-    "price": {
-      "amount": 4.72,
-      "currency": "GHS"
-    },
     "message": "Order placed successfully."
   }
 }`

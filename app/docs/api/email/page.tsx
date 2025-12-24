@@ -283,15 +283,14 @@ export default function SendEmailDocsPage() {
     "id": "email_abc123xyz",
     "email_id": "re_xxxxxxxxxxxx",
     "status": "sent",
-    "recipients": 1,
-    "cost": 0.01,
-    "currency": "USD"
+    "recipients": 1
   }
 }`}</code>
           </pre>
         </div>
       </div>
 
+      {/* Pricing section commented out
       <div className="mb-12">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Pricing</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
@@ -311,6 +310,7 @@ export default function SendEmailDocsPage() {
           </div>
         </div>
       </div>
+      */}
 
       <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-12">
         <Link href="/docs/authentication" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">

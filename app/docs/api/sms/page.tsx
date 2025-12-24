@@ -297,10 +297,6 @@ export default function SendSMSDocsPage() {
     "to": "+233540800994",
     "message_length": 32,
     "segments": 1,
-    "price": {
-      "amount": 0.029,
-      "currency": "USD"
-    },
     "country": {
       "code": "233",
       "name": "Ghana"

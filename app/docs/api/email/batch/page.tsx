@@ -291,8 +291,6 @@ export default function BatchDocsPage() {
     "status": "sent",
     "emails_sent": 3,
     "total_recipients": 4,
-    "cost": 0.04,
-    "currency": "USD",
     "results": {
       "data": [
         { "id": "email_001" },
@@ -306,7 +304,7 @@ export default function BatchDocsPage() {
         </div>
       </div>
 
-      {/* Pricing */}
+      {/* Pricing section commented out
       <div className="mb-12">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Pricing</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
@@ -326,6 +324,7 @@ export default function BatchDocsPage() {
           </div>
         </div>
       </div>
+      */}
 
       {/* Navigation */}
       <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-12">

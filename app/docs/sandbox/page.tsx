@@ -253,10 +253,6 @@ export default function SandboxPage() {
     "from": "SendComms",
     "message_length": 24,
     "segments": 1,
-    "price": {
-      "amount": 0.029,
-      "currency": "USD"
-    },
     "provider": "sandbox",
     "country": {
       "code": "233",

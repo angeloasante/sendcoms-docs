@@ -252,9 +252,6 @@ export default function DataPackagesDocsPage() {
           "network_code": "mtn",
           "capacity_gb": 1,
           "capacity_mb": 1000,
-          "price": { "amount": 4.72, "currency": "GHS" },
-          "provider_price": { "amount": 4.10, "currency": "GHS" },
-          "margin_percent": 15,
           "in_stock": true
         },
         {
@@ -262,9 +259,6 @@ export default function DataPackagesDocsPage() {
           "network_code": "mtn",
           "capacity_gb": 5,
           "capacity_mb": 5000,
-          "price": { "amount": 23.58, "currency": "GHS" },
-          "provider_price": { "amount": 20.50, "currency": "GHS" },
-          "margin_percent": 15,
           "in_stock": true
         }
       ],
@@ -278,6 +272,7 @@ export default function DataPackagesDocsPage() {
         </div>
       </div>
 
+      {/* Sample Pricing section commented out
       <div className="mb-12">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Sample Pricing</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
@@ -313,6 +308,7 @@ export default function DataPackagesDocsPage() {
           </div>
         </div>
       </div>
+      */}
 
       <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-12">
         <Link href="/docs/api/email/webhooks" className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">
