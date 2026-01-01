@@ -110,6 +110,45 @@ const customerErrors = [
     "message": "Missing required field: to"
   }
 }`
+  },
+  {
+    code: 'SMS_SEND_FAILED',
+    status: 400,
+    description: 'Invalid sender ID or phone number',
+    example: `{
+  "success": false,
+  "error": {
+    "code": "SMS_SEND_FAILED",
+    "message": "The \"from\" number is not a verified SendComms sender. Remove the \"from\" parameter to use the default sender, add a verified number in your dashboard, or contact support@sendcomms.com for assistance.",
+    "transaction_id": "sms_abc123xyz"
+  }
+}`
+  },
+  {
+    code: 'INVALID_SENDER_ID',
+    status: 400,
+    description: 'The sender ID is not verified for your account',
+    example: `{
+  "success": false,
+  "error": {
+    "code": "SMS_SEND_FAILED",
+    "message": "The \"from\" number is not verified. Please add and verify this number in your SendComms dashboard or contact support@sendcomms.com.",
+    "transaction_id": "sms_abc123xyz"
+  }
+}`
+  },
+  {
+    code: 'RECIPIENT_OPTED_OUT',
+    status: 400,
+    description: 'The recipient has opted out of receiving messages',
+    example: `{
+  "success": false,
+  "error": {
+    "code": "SMS_SEND_FAILED",
+    "message": "This recipient has opted out of receiving messages from this number.",
+    "transaction_id": "sms_abc123xyz"
+  }
+}`
   }
 ];
 

@@ -173,7 +173,7 @@ export default function DocsLayout({
           </button>
           
           {!collapsed && (
-            <div className={`overflow-hidden transition-all duration-200 ${emailDropdownOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className={`overflow-hidden transition-all duration-200 ${emailDropdownOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}>
               <div className="relative ml-2 pl-4 mt-1 space-y-0.5">
                 <div className="absolute left-2 top-0 bottom-2 w-px bg-white/10"></div>
                 <Link 
@@ -195,6 +195,16 @@ export default function DocsLayout({
                   }`}
                 >
                   Batch Send
+                </Link>
+                <Link 
+                  href="/docs/api/email/domains" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/email/domains') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Domains
                 </Link>
                 <Link 
                   href="/docs/api/email/webhooks" 

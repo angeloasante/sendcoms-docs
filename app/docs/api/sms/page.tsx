@@ -6,22 +6,35 @@ import { useState } from 'react';
 type Language = 'curl' | 'nodejs' | 'python' | 'php';
 
 const codeExamples: Record<Language, string> = {
-  curl: `curl -X POST \\
+  curl: `# Send SMS using default "Sendcomms" sender
+curl -X POST \\
   https://api.sendcomms.com/api/v1/sms/send \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "to": "+233540800994",
     "message": "Your verification code is 123456"
+  }'
+
+# Send SMS with custom sender (requires verified number)
+curl -X POST \\
+  https://api.sendcomms.com/api/v1/sms/send \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "to": "+233540800994",
+    "message": "Your order is ready!",
+    "from": "+1234567890"
   }'`,
   nodejs: `import axios from 'axios';
 
+// Send SMS using default "Sendcomms" sender
 const response = await axios.post(
   'https://api.sendcomms.com/api/v1/sms/send',
   {
     to: '+233540800994',
-    message: 'Your verification code is 123456',
-    from: 'YourApp' // optional
+    message: 'Your verification code is 123456'
+    // from is optional - omit to use "Sendcomms" as sender
   },
   {
     headers: {
@@ -33,7 +46,7 @@ const response = await axios.post(
 
 console.log(response.data);
 
-// Using fetch
+// Using fetch with custom sender (must be verified in dashboard)
 const res = await fetch('https://api.sendcomms.com/api/v1/sms/send', {
   method: 'POST',
   headers: {
@@ -42,11 +55,13 @@ const res = await fetch('https://api.sendcomms.com/api/v1/sms/send', {
   },
   body: JSON.stringify({
     to: '+233540800994',
-    message: 'Your verification code is 123456'
+    message: 'Your verification code is 123456',
+    from: '+1234567890' // Optional: verified number from your dashboard
   })
 });`,
   python: `import requests
 
+# Send SMS using default "Sendcomms" sender
 response = requests.post(
     'https://api.sendcomms.com/api/v1/sms/send',
     headers={
@@ -56,12 +71,13 @@ response = requests.post(
     json={
         'to': '+233540800994',
         'message': 'Your verification code is 123456'
+        # 'from' is optional - omit to use "Sendcomms" as sender
     }
 )
 
 print(response.json())
 
-# Using httpx (async)
+# Send with custom verified sender
 import httpx
 
 async with httpx.AsyncClient() as client:
@@ -70,16 +86,19 @@ async with httpx.AsyncClient() as client:
         headers={'Authorization': 'Bearer YOUR_API_KEY'},
         json={
             'to': '+233540800994',
-            'message': 'Your verification code is 123456'
+            'message': 'Your verification code is 123456',
+            'from': '+1234567890'  # Must be verified in dashboard
         }
     )`,
   php: `<?php
 
+// Send SMS using default "Sendcomms" sender
 $curl = curl_init();
 
 $data = [
     'to' => '+233540800994',
     'message' => 'Your verification code is 123456'
+    // 'from' is optional - omit to use "Sendcomms" as sender
 ];
 
 curl_setopt_array($curl, [
@@ -97,7 +116,10 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 $result = json_decode($response, true);
-print_r($result);`
+print_r($result);
+
+// With custom verified sender
+$data['from'] = '+1234567890'; // Must be verified in dashboard`
 };
 
 export default function SendSMSDocsPage() {
@@ -133,6 +155,21 @@ export default function SendSMSDocsPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span><strong>Global Coverage:</strong> 180+ countries with optimized delivery routes</span>
+      </div>
+
+      {/* Default Sender Info */}
+      <div className="bg-[#101520] border border-blue-500/20 rounded-lg py-3 px-4 mb-6 flex items-start gap-3 text-sm">
+        <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+          <span className="text-blue-400 font-semibold">Default Sender:</span>
+          <span className="text-gray-400 ml-1">
+            Messages sent without a <code className="text-blue-400 bg-blue-500/10 px-1 py-0.5 rounded text-xs">from</code> parameter 
+            will be delivered from <strong className="text-white">&quot;Sendcomms&quot;</strong>. To use a custom sender ID, 
+            add and verify numbers in your <a href="https://console.sendcomms.com/dashboard" className="text-blue-400 hover:underline">dashboard</a>.
+          </span>
+        </div>
       </div>
 
       {/* Supported Regions */}
@@ -239,7 +276,7 @@ export default function SendSMSDocsPage() {
                 <td className="py-3 px-4 text-sm text-purple-400 font-mono">from</td>
                 <td className="py-3 px-4 text-xs text-gray-400">string</td>
                 <td className="py-3 px-4"><span className="bg-gray-500/10 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-500/20">Optional</span></td>
-                <td className="py-3 px-4 text-sm text-gray-400">Sender ID (alphanumeric, max 11 chars)</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Sender ID or phone number. If omitted, messages are sent from <strong>&quot;Sendcomms&quot;</strong></td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-purple-400 font-mono">reference</td>

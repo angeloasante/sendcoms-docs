@@ -228,7 +228,7 @@ export default function SendEmailDocsPage() {
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">from</td>
                 <td className="py-3 px-4 text-xs text-gray-400">string</td>
                 <td className="py-3 px-4"><span className="bg-gray-500/10 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-500/20">Optional</span></td>
-                <td className="py-3 px-4 text-sm text-gray-400">Sender address</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Sender address. If omitted, uses your verified domain or defaults to info@sendcomms.com. Format: &quot;Name &lt;email@domain.com&gt;&quot;</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">replyTo</td>
