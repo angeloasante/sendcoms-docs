@@ -4,32 +4,36 @@ import Link from 'next/link';
 
 const rateLimits = {
   sms: {
-    free: { perMinute: 5, perDay: 100 },
-    starter: { perMinute: 50, perDay: 1000 },
-    pro: { perMinute: 200, perDay: 10000 },
-    enterprise: { perMinute: 1000, perDay: 100000 }
+    free: { perMinute: 5, perDay: 50, perMonth: 50 },
+    starter: { perMinute: 50, perDay: 300, perMonth: 300 },
+    pro: { perMinute: 200, perDay: 1500, perMonth: 1500 },
+    business: { perMinute: 500, perDay: 6000, perMonth: 6000 },
+    enterprise: { perMinute: 5000, perDay: 100000, perMonth: 1000000 }
   },
   email: {
-    free: { perMinute: 10, perDay: 500 },
-    starter: { perMinute: 100, perDay: 5000 },
-    pro: { perMinute: 500, perDay: 50000 },
-    enterprise: { perMinute: 2000, perDay: 500000 }
+    free: { perMinute: 10, perDay: 500, perMonth: 500 },
+    starter: { perMinute: 100, perDay: 2000, perMonth: 2000 },
+    pro: { perMinute: 500, perDay: 10000, perMonth: 10000 },
+    business: { perMinute: 1000, perDay: 40000, perMonth: 40000 },
+    enterprise: { perMinute: 10000, perDay: 500000, perMonth: 10000000 }
   },
   data: {
-    free: { perMinute: 2, perDay: 50 },
-    starter: { perMinute: 20, perDay: 500 },
-    pro: { perMinute: 100, perDay: 5000 },
-    enterprise: { perMinute: 500, perDay: 50000 }
+    free: { perMinute: 2, perDay: 50, perMonth: 50 },
+    starter: { perMinute: 20, perDay: 300, perMonth: 300 },
+    pro: { perMinute: 100, perDay: 1500, perMonth: 1500 },
+    business: { perMinute: 200, perDay: 6000, perMonth: 6000 },
+    enterprise: { perMinute: 2000, perDay: 50000, perMonth: 500000 }
   },
   airtime: {
-    free: { perMinute: 2, perDay: 50 },
-    starter: { perMinute: 20, perDay: 500 },
-    pro: { perMinute: 100, perDay: 5000 },
-    enterprise: { perMinute: 500, perDay: 50000 }
+    free: { perMinute: 2, perDay: 50, perMonth: 50 },
+    starter: { perMinute: 20, perDay: 300, perMonth: 300 },
+    pro: { perMinute: 100, perDay: 1500, perMonth: 1500 },
+    business: { perMinute: 200, perDay: 6000, perMonth: 6000 },
+    enterprise: { perMinute: 2000, perDay: 50000, perMonth: 500000 }
   }
 };
 
-const plans = ['free', 'starter', 'pro', 'enterprise'] as const;
+const plans = ['free', 'starter', 'pro', 'business', 'enterprise'] as const;
 const services = ['sms', 'email', 'data', 'airtime'] as const;
 
 export default function RateLimitsPage() {
@@ -110,7 +114,11 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
       <div className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4">Rate Limits by Service</h2>
         <p className="text-gray-400 text-sm mb-6">
-          Rate limits vary by service and plan. Limits are applied per API key.
+          Rate limits vary by service and plan, and are applied per account &mdash; every API key on the account
+          shares the same counters. The per-minute and per-day windows are fixed windows; the monthly window is a
+          calendar month that resets at 00:00 UTC on the 1st. Sandbox requests made with an
+          <code className="text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded mx-1">sc_test_</code>
+          key are answered before the rate limiter runs, so they never consume live quota.
         </p>
 
         {/* SMS */}
@@ -125,6 +133,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Plan</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Minute</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Day</th>
+                  <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Month</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -133,6 +142,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                     <td className="py-3 px-4 text-sm text-white font-medium capitalize">{plan}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.sms[plan].perMinute.toLocaleString()}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.sms[plan].perDay.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.sms[plan].perMonth.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -152,6 +162,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Plan</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Minute</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Day</th>
+                  <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Month</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -160,6 +171,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                     <td className="py-3 px-4 text-sm text-white font-medium capitalize">{plan}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.email[plan].perMinute.toLocaleString()}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.email[plan].perDay.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.email[plan].perMonth.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -179,6 +191,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Plan</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Minute</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Day</th>
+                  <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Month</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -187,6 +200,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                     <td className="py-3 px-4 text-sm text-white font-medium capitalize">{plan}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.data[plan].perMinute.toLocaleString()}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.data[plan].perDay.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.data[plan].perMonth.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -206,6 +220,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Plan</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Minute</th>
                   <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Day</th>
+                  <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Per Month</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -214,6 +229,7 @@ X-RateLimit-Reset: 1766452500 # Unix timestamp when limit resets`}</code>
                     <td className="py-3 px-4 text-sm text-white font-medium capitalize">{plan}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.airtime[plan].perMinute.toLocaleString()}</td>
                     <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.airtime[plan].perDay.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-sm text-gray-400 font-mono">{rateLimits.airtime[plan].perMonth.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

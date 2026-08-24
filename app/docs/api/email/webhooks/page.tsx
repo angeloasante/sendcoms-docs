@@ -13,7 +13,16 @@ curl -X POST \\
   -H "Content-Type: application/json" \\
   -d '{
     "url": "https://your-server.com/webhooks/email",
-    "events": ["email.sent", "email.delivered", "email.bounced", "email.complained"],
+    "events": [
+      "email.sent",
+      "email.delivered",
+      "email.bounced",
+      "email.complained",
+      "email.opened",
+      "email.clicked",
+      "email.delivery_delayed",
+      "email.failed"
+    ],
     "secret": "your_webhook_secret"
   }'`,
   nodejs: `import axios from 'axios';
@@ -23,7 +32,16 @@ const response = await axios.post(
   'https://api.sendcomms.com/api/v1/webhooks',
   {
     url: 'https://your-server.com/webhooks/email',
-    events: ['email.sent', 'email.delivered', 'email.bounced', 'email.complained'],
+    events: [
+      'email.sent',
+      'email.delivered',
+      'email.bounced',
+      'email.complained',
+      'email.opened',
+      'email.clicked',
+      'email.delivery_delayed',
+      'email.failed'
+    ],
     secret: 'your_webhook_secret'
   },
   {
@@ -46,7 +64,16 @@ response = requests.post(
     },
     json={
         'url': 'https://your-server.com/webhooks/email',
-        'events': ['email.sent', 'email.delivered', 'email.bounced', 'email.complained'],
+        'events': [
+            'email.sent',
+            'email.delivered',
+            'email.bounced',
+            'email.complained',
+            'email.opened',
+            'email.clicked',
+            'email.delivery_delayed',
+            'email.failed'
+        ],
         'secret': 'your_webhook_secret'
     }
 )
@@ -58,7 +85,16 @@ $curl = curl_init();
 
 $data = [
     'url' => 'https://your-server.com/webhooks/email',
-    'events' => ['email.sent', 'email.delivered', 'email.bounced', 'email.complained'],
+    'events' => [
+        'email.sent',
+        'email.delivered',
+        'email.bounced',
+        'email.complained',
+        'email.opened',
+        'email.clicked',
+        'email.delivery_delayed',
+        'email.failed'
+    ],
     'secret' => 'your_webhook_secret'
 ];
 
@@ -96,8 +132,9 @@ export default function WebhooksDocsPage() {
 
       <div className="flex items-start justify-between mb-8 border-b border-white/5 pb-8">
         <p className="text-gray-400 text-sm leading-relaxed max-w-2xl">
-          Receive real-time notifications about email events via webhooks. Track email delivery, 
-          bounces, complaints, and more. Perfect for building responsive email tracking systems.
+          Receive real-time notifications about email events via webhooks. Track sends, deliveries, bounces,
+          complaints, opens, clicks and more. Register an HTTPS endpoint, subscribe to the events you care about,
+          and verify the signature on every request.
         </p>
       </div>
 
@@ -127,31 +164,66 @@ export default function WebhooksDocsPage() {
             <tbody className="divide-y divide-white/5">
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.sent</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Email was successfully sent to the mail server</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Message accepted by SendComms and handed to our mail infrastructure</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.delivered</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Email was successfully delivered to the recipient</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Recipient&apos;s mail server accepted the message</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.bounced</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Email bounced (hard or soft bounce)</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Message was rejected by the recipient&apos;s mail server (hard or soft bounce)</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.complained</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Recipient marked email as spam</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Recipient marked the message as spam</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.opened</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Email was opened (if tracking enabled)</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Tracking pixel loaded — requires open tracking on the sending domain</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.clicked</td>
-                <td className="py-3 px-4 text-sm text-gray-400">Link in email was clicked (if tracking enabled)</td>
+                <td className="py-3 px-4 text-sm text-gray-400">A tracked link was clicked — requires click tracking on the sending domain</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.delivery_delayed</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Delivery was temporarily deferred and is still being retried</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.failed</td>
+                <td className="py-3 px-4 text-sm text-gray-400">The send itself failed — the message never left our mail infrastructure</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.scheduled</td>
+                <td className="py-3 px-4 text-sm text-gray-400">A message was accepted for delivery at a future time</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.suppressed</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Send was blocked because the address is on your suppression list</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">email.received</td>
+                <td className="py-3 px-4 text-sm text-gray-400">An inbound message arrived on one of your domains</td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <p className="text-xs text-gray-500 mt-3">
+          The same endpoint also accepts SMS, airtime and data events
+          (<code className="text-blue-400 bg-blue-500/10 px-1 rounded">sms.sent</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">sms.delivered</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">sms.failed</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">airtime.success</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">airtime.failed</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.purchased</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.delivered</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.success</code>,{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.failed</code>), plus the wildcard{' '}
+          <code className="text-blue-400 bg-blue-500/10 px-1 rounded">&quot;*&quot;</code> which subscribes to everything.
+          Any name outside this list is rejected with <code className="text-blue-400 bg-blue-500/10 px-1 rounded">400 INVALID_EVENTS</code>.
+        </p>
       </div>
 
       {/* Language Selector */}
@@ -198,29 +270,134 @@ export default function WebhooksDocsPage() {
         </div>
       </div>
 
+      {/* Registration Parameters */}
+      <div className="mb-10">
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Registration Parameters</h3>
+        <div className="border border-white/10 rounded-lg overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 bg-[#16181b]">
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Parameter</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Type</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Required</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">url</td>
+                <td className="py-3 px-4 text-xs text-gray-400">string</td>
+                <td className="py-3 px-4"><span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs border border-red-500/20">Required</span></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Your endpoint. Must be <code className="text-blue-400 bg-blue-500/10 px-1 rounded">https://</code> — anything else returns 400 INVALID_URL</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">events</td>
+                <td className="py-3 px-4 text-xs text-gray-400">string[]</td>
+                <td className="py-3 px-4"><span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs border border-red-500/20">Required</span></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Non-empty list of event names from the table above, or <code className="text-blue-400 bg-blue-500/10 px-1 rounded">[&quot;*&quot;]</code> for all of them. Unknown names return 400 INVALID_EVENTS</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">secret</td>
+                <td className="py-3 px-4 text-xs text-gray-400">string</td>
+                <td className="py-3 px-4"><span className="bg-gray-500/10 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-500/20">Optional</span></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Signing secret. If you omit it we generate a <code className="text-blue-400 bg-blue-500/10 px-1 rounded">whsec_</code> value and return it once</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-gray-500 mt-3">
+          You have one webhook endpoint per account — registering again updates the existing URL, event list and
+          secret rather than adding a second endpoint.
+        </p>
+      </div>
+
       {/* Webhook Payload */}
       <div className="mb-10">
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Webhook Payload</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
           <p className="text-sm text-gray-400 mb-4">
-            When an event occurs, we&apos;ll send a POST request to your webhook URL with the following payload:
+            When an event occurs we POST a JSON body to your endpoint. Every payload has the same envelope —{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">event</code>,{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data</code>,{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">transaction_id</code> and{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">timestamp</code> — with the fields inside{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data</code> varying by event.
           </p>
-          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5">
+
+          <p className="text-sm text-white font-medium mb-2">Delivery events (email.delivered, email.bounced)</p>
+          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5 mb-6">
             <code className="text-gray-300">{`{
   "event": "email.delivered",
-  "transaction_id": "txn_mjgc0ejr_3ca715bfb7a0",
-  "timestamp": "2025-12-21T10:30:00Z",
   "data": {
-    "id": "txn_xxx",
-    "email_id": "abc123-def456-789",
+    "transaction_id": "email_mjgc0ejr_3ca715bfb7a0",
     "type": "email",
     "status": "delivered",
-    "to": "recipient@example.com",
+    "email_id": "msg_8f21c0d4a97b",
+    "to": ["recipient@example.com"],
     "subject": "Welcome to our platform!",
-    "from": "hello@yourdomain.com"
-  }
+    "detail": "",
+    "timestamp": "2026-08-23T10:30:04.512000+00:00"
+  },
+  "transaction_id": "email_mjgc0ejr_3ca715bfb7a0",
+  "timestamp": "2026-08-23T10:30:04.702000+00:00"
 }`}</code>
           </pre>
+
+          <p className="text-sm text-white font-medium mb-2">Send events (email.sent, email.failed)</p>
+          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5">
+            <code className="text-gray-300">{`{
+  "event": "email.sent",
+  "data": {
+    "transaction_id": "email_mjgc0ejr_3ca715bfb7a0",
+    "type": "email",
+    "status": "sent",
+    "to": ["recipient@example.com"],
+    "subject": "Welcome to our platform!",
+    "email_id": "msg_8f21c0d4a97b",
+    "from": "Your App <hello@yourdomain.com>",
+    "cost": 0.01,
+    "error": null
+  },
+  "transaction_id": "email_mjgc0ejr_3ca715bfb7a0",
+  "timestamp": "2026-08-23T10:30:00.318000+00:00"
+}`}</code>
+          </pre>
+
+          <ul className="text-sm text-gray-400 leading-relaxed mt-4 space-y-2 list-disc list-inside">
+            <li><code className="text-blue-400 bg-blue-500/10 px-1 rounded">transaction_id</code> appears both in the envelope and inside <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data</code>, and matches the value returned by the send endpoint.</li>
+            <li><code className="text-blue-400 bg-blue-500/10 px-1 rounded">email_id</code> is the per-message id, so it also matches an entry in a batch <code className="text-blue-400 bg-blue-500/10 px-1 rounded">results[]</code>.</li>
+            <li>On <code className="text-blue-400 bg-blue-500/10 px-1 rounded">email.bounced</code>, <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.status</code> is <code className="text-blue-400 bg-blue-500/10 px-1 rounded">&quot;failed&quot;</code> and <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.detail</code> carries the reason reported by the receiving server. Always branch on <code className="text-blue-400 bg-blue-500/10 px-1 rounded">event</code>, not on <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data.status</code>.</li>
+            <li>Treat <code className="text-blue-400 bg-blue-500/10 px-1 rounded">data</code> as open-ended — we add fields over time, so ignore anything you don&apos;t recognise.</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Request Headers */}
+      <div className="mb-10">
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Request Headers</h3>
+        <div className="border border-white/10 rounded-lg overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 bg-[#16181b]">
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Header</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Value</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">X-SendComms-Signature</td>
+                <td className="py-3 px-4 text-sm text-gray-400"><code className="text-gray-300">sha256=</code> followed by the hex HMAC-SHA256 of the raw request body, keyed with your webhook secret. Only sent when a secret is configured</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">Content-Type</td>
+                <td className="py-3 px-4 text-sm text-gray-400"><code className="text-gray-300">application/json</code></td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-blue-400 font-mono">User-Agent</td>
+                <td className="py-3 px-4 text-sm text-gray-400"><code className="text-gray-300">SendComms-Webhook/1.0</code></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -237,10 +414,19 @@ export default function WebhooksDocsPage() {
   "data": {
     "id": "e406c83c-50bc-4783-b5fc-4beafe6bf5eb",
     "url": "https://your-server.com/webhooks/email",
-    "events": ["email.sent", "email.delivered", "email.bounced"],
+    "events": [
+      "email.sent",
+      "email.delivered",
+      "email.bounced",
+      "email.complained",
+      "email.opened",
+      "email.clicked",
+      "email.delivery_delayed",
+      "email.failed"
+    ],
     "secret": "whsec_21be983f359112f9e07658ed2bddcee3...",
     "active": true,
-    "created_at": "2025-12-21T23:25:12.006Z"
+    "created_at": "2026-08-23T23:25:12.006000+00:00"
   }
 }`}</code>
           </pre>
@@ -252,31 +438,58 @@ export default function WebhooksDocsPage() {
         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Verifying Webhooks</h3>
         <div className="bg-[#121316] border border-white/5 rounded-lg p-6">
           <p className="text-sm text-gray-400 mb-4">
-            Always verify the <code className="text-blue-400 bg-blue-500/10 px-1 rounded">X-SendComms-Signature</code> header to ensure requests are authentic:
+            Every request is signed with your webhook secret. The signature is{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">sha256=</code> followed by the hex-encoded
+            HMAC-SHA256 of the <strong>raw request body</strong>, sent in the{' '}
+            <code className="text-blue-400 bg-blue-500/10 px-1 rounded">X-SendComms-Signature</code> header. Compute it
+            over the bytes you received — re-serialising the parsed JSON will not reproduce the same digest.
           </p>
-          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5">
-            <code className="text-gray-300">{`// Node.js/Express example
+          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5 mb-6">
+            <code className="text-gray-300">{`// Node.js / Express — note express.raw(), not express.json()
 const crypto = require('crypto');
 
-app.post('/webhooks/sendcomms', (req, res) => {
-  const signature = req.headers['x-sendcomms-signature'];
-  const secret = 'whsec_your_secret_here';
-  
-  const expectedSignature = 'sha256=' + 
-    crypto.createHmac('sha256', secret)
-      .update(JSON.stringify(req.body))
-      .digest('hex');
-  
-  if (signature !== expectedSignature) {
-    return res.status(401).json({ error: 'Invalid signature' });
+app.post('/webhooks/sendcomms',
+  express.raw({ type: 'application/json' }),
+  (req, res) => {
+    const secret = process.env.SENDCOMMS_WEBHOOK_SECRET; // whsec_...
+    const received = req.headers['x-sendcomms-signature'] || '';
+
+    const expected = 'sha256=' +
+      crypto.createHmac('sha256', secret)
+        .update(req.body)          // the raw Buffer, unmodified
+        .digest('hex');
+
+    const a = Buffer.from(received);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      return res.status(401).json({ error: 'Invalid signature' });
+    }
+
+    const { event, data, transaction_id } = JSON.parse(req.body.toString());
+    console.log(\`\${event} for \${transaction_id}\`);
+
+    // Acknowledge first, process asynchronously
+    res.status(200).json({ received: true });
   }
-  
-  // Process the webhook
-  const { event, data } = req.body;
-  console.log(\`Received \${event} for \${data.to}\`);
-  
-  res.status(200).json({ received: true });
-});`}</code>
+);`}</code>
+          </pre>
+          <pre className="bg-[#0b0c0e] p-4 rounded-lg text-sm overflow-x-auto border border-white/5">
+            <code className="text-gray-300">{`# Python / Flask
+import hmac, hashlib, os
+from flask import request, jsonify
+
+@app.post('/webhooks/sendcomms')
+def sendcomms_webhook():
+    secret = os.environ['SENDCOMMS_WEBHOOK_SECRET'].encode()
+    raw = request.get_data()                       # raw bytes, unmodified
+    expected = 'sha256=' + hmac.new(secret, raw, hashlib.sha256).hexdigest()
+
+    if not hmac.compare_digest(expected, request.headers.get('X-SendComms-Signature', '')):
+        return jsonify(error='Invalid signature'), 401
+
+    payload = request.get_json()
+    print(payload['event'], payload['transaction_id'])
+    return jsonify(received=True), 200`}</code>
           </pre>
         </div>
       </div>
@@ -289,28 +502,35 @@ app.post('/webhooks/sendcomms', (req, res) => {
             <span className="text-green-400">✓</span>
             <div>
               <p className="text-sm text-white font-medium">Respond quickly</p>
-              <p className="text-xs text-gray-400">Return a 200 status within 5 seconds. Process events asynchronously.</p>
+              <p className="text-xs text-gray-400">We wait up to 10 seconds for a response. Acknowledge with a 2xx immediately and process the event asynchronously.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
             <div>
               <p className="text-sm text-white font-medium">Handle duplicates</p>
-              <p className="text-xs text-gray-400">Use transaction_id to deduplicate events. We may retry failed deliveries.</p>
+              <p className="text-xs text-gray-400">One transaction produces several events, so deduplicate on the pair of transaction_id and event rather than transaction_id alone.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
             <div>
               <p className="text-sm text-white font-medium">Use HTTPS</p>
-              <p className="text-xs text-gray-400">Webhook URLs must use HTTPS for security.</p>
+              <p className="text-xs text-gray-400">Webhook URLs must use HTTPS — an http:// URL is rejected with 400 INVALID_URL.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
             <div>
               <p className="text-sm text-white font-medium">Verify signatures</p>
-              <p className="text-xs text-gray-400">Always verify the X-SendComms-Signature header to prevent spoofing.</p>
+              <p className="text-xs text-gray-400">Always verify X-SendComms-Signature against the raw body with a constant-time comparison to prevent spoofing.</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-green-400">✓</span>
+            <div>
+              <p className="text-sm text-white font-medium">Tolerate unknown events</p>
+              <p className="text-xs text-gray-400">Ignore event names and data fields you don&apos;t handle yet instead of erroring, so new events don&apos;t break your endpoint.</p>
             </div>
           </div>
         </div>

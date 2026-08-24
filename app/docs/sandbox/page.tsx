@@ -336,7 +336,6 @@ export default function SandboxPage() {
                 <li>• Required fields</li>
                 <li>• Message length limits</li>
                 <li>• Network validation</li>
-                <li>• Rate limiting</li>
               </ul>
             </div>
             <div>
@@ -345,6 +344,8 @@ export default function SandboxPage() {
               </h4>
               <ul className="space-y-2 text-gray-400 text-xs">
                 <li>• Balance check</li>
+                <li>• Rate limits (no live quota consumed)</li>
+                <li>• Idempotency keys</li>
                 <li>• Actual message delivery</li>
                 <li>• Provider API calls</li>
                 <li>• Real charges</li>
@@ -432,7 +433,8 @@ SENDCOMMS_API_KEY=sc_live_xxx`}</code>
               </svg>
             </summary>
             <div className="px-4 pb-4 text-gray-400 text-sm border-t border-white/5 pt-3">
-              Yes, rate limits apply to both test and live keys to ensure your integration handles limits correctly.
+              No. A sandbox request is answered as soon as validation passes, before the rate limiter runs, so it
+              never consumes your live per-minute, per-day or per-month quota.
             </div>
           </details>
           <details className="bg-[#121316] border border-white/10 rounded-lg group">

@@ -13,20 +13,22 @@ const errorResponses = [
   "success": false,
   "error": {
     "code": "UNAUTHORIZED",
-    "message": "Invalid or missing API key"
+    "message": "Invalid or missing API key",
+    "docs_url": "https://docs.sendcomms.com/docs/errors#client-error-codes"
   }
 }`
   },
   {
     code: '403',
-    name: 'Forbidden',
+    name: 'Account Suspended',
     color: 'orange',
-    description: 'API key is valid but lacks required permissions or account is suspended',
+    description: 'The API key is valid, but the account behind it is suspended',
     response: `{
   "success": false,
   "error": {
-    "code": "FORBIDDEN",
-    "message": "Your account has been suspended. Please contact support."
+    "code": "ACCOUNT_SUSPENDED",
+    "message": "Account suspended. Contact support.",
+    "docs_url": "https://docs.sendcomms.com/docs/errors#client-error-codes"
   }
 }`
   }
@@ -133,7 +135,7 @@ export default function AuthenticationPage() {
                   <code className="text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded text-xs">sc_test_</code>
                 </td>
                 <td className="py-3 px-4 text-white">Sandbox</td>
-                <td className="py-3 px-4 text-gray-400">Test key for development (coming soon)</td>
+                <td className="py-3 px-4 text-gray-400">Test key for development &mdash; returns mock responses, no charges</td>
               </tr>
             </tbody>
           </table>
@@ -194,8 +196,19 @@ export default function AuthenticationPage() {
       {/* API Key Permissions */}
       <div className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-4">API Key Permissions</h2>
+
+        <div className="mb-4 rounded-lg border border-blue-500/25 bg-blue-500/5 p-4">
+          <p className="text-sm font-medium text-blue-300 mb-1">Enforced on every request</p>
+          <p className="text-sm text-gray-400">
+            A key may only call the services listed in its permissions. Calling a service the key does not carry
+            returns <code className="text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded text-xs">403 FORBIDDEN</code>,
+            with the required permission named in the response. Keys created today are granted all four; issue a
+            narrower key when handing credentials to a third party so it cannot spend on data bundles or airtime.
+          </p>
+        </div>
+
         <p className="text-gray-400 text-sm mb-4">
-          Each API key has associated permissions that control which endpoints it can access:
+          Each key carries the services it is allowed to use:
         </p>
         <div className="bg-[#121316] border border-white/10 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
@@ -209,28 +222,28 @@ export default function AuthenticationPage() {
             <tbody className="divide-y divide-white/5">
               <tr>
                 <td className="py-3 px-4">
-                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">sms:send</code>
+                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">sms</code>
                 </td>
                 <td className="py-3 px-4 text-green-400 font-mono text-xs">/api/v1/sms/*</td>
                 <td className="py-3 px-4 text-gray-400">Send SMS messages</td>
               </tr>
               <tr>
                 <td className="py-3 px-4">
-                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">email:send</code>
+                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">email</code>
                 </td>
                 <td className="py-3 px-4 text-green-400 font-mono text-xs">/api/v1/email/*</td>
                 <td className="py-3 px-4 text-gray-400">Send email messages</td>
               </tr>
               <tr>
                 <td className="py-3 px-4">
-                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">data:purchase</code>
+                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">data</code>
                 </td>
                 <td className="py-3 px-4 text-green-400 font-mono text-xs">/api/v1/data/*</td>
                 <td className="py-3 px-4 text-gray-400">Purchase data bundles</td>
               </tr>
               <tr>
                 <td className="py-3 px-4">
-                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">airtime:purchase</code>
+                  <code className="text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded text-xs">airtime</code>
                 </td>
                 <td className="py-3 px-4 text-green-400 font-mono text-xs">/api/v1/airtime/*</td>
                 <td className="py-3 px-4 text-gray-400">Purchase airtime (coming soon)</td>
@@ -294,7 +307,9 @@ export default function AuthenticationPage() {
               <div>
                 <h4 className="text-white font-medium mb-1">Store Keys Securely</h4>
                 <p className="text-gray-400 text-sm">
-                  Never hardcode API keys in your source code. Use environment variables or a secrets manager.
+                  We only store a SHA-256 hash of your key, so the full value is shown once at creation and can
+                  never be retrieved again &mdash; if you lose it, create a new key. Never hardcode API keys in your
+                  source code; use environment variables or a secrets manager.
                 </p>
               </div>
             </div>

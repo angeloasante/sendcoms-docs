@@ -122,10 +122,24 @@ export default function DocsLayout({
             </svg>
             {!collapsed && <span>Rate Limits</span>}
           </Link>
-          <Link 
-            href="/docs/errors" 
+          <Link
+            href="/docs/api/requests"
             className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
-              isActive('/docs/errors') 
+              isActive('/docs/api/requests')
+                ? 'text-blue-400 bg-blue-500/10 font-medium'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            } ${collapsed ? 'justify-center' : ''}`}
+            title={collapsed ? 'Request Log' : undefined}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            {!collapsed && <span>Request Log</span>}
+          </Link>
+          <Link
+            href="/docs/errors"
+            className={`flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
+              isActive('/docs/errors')
                 ? 'text-blue-400 bg-blue-500/10 font-medium' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             } ${collapsed ? 'justify-center' : ''}`}
@@ -205,6 +219,16 @@ export default function DocsLayout({
                   }`}
                 >
                   Domains
+                </Link>
+                <Link 
+                  href="/docs/api/email/mailboxes" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/email/mailboxes') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Mailboxes
                 </Link>
                 <Link 
                   href="/docs/api/email/webhooks" 
@@ -313,6 +337,26 @@ export default function DocsLayout({
                   }`}
                 >
                   Send SMS
+                </Link>
+                <Link 
+                  href="/docs/api/sms/sender-ids" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/sms/sender-ids') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Sender IDs
+                </Link>
+                <Link 
+                  href="/docs/api/sms/countries" 
+                  className={`block px-3 py-1.5 text-sm transition-colors border-l ${
+                    isActive('/docs/api/sms/countries') 
+                      ? 'text-blue-400 bg-blue-500/5 font-medium border-blue-500' 
+                      : 'text-gray-400 hover:text-white border-transparent hover:border-gray-600'
+                  }`}
+                >
+                  Country Coverage
                 </Link>
                 <Link 
                   href="/docs/api/sms/pricing" 

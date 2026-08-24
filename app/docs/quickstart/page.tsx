@@ -154,9 +154,9 @@ echo $response;`
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "phone": "+2348012345678",
+    "phone_number": "+2348012345678",
     "amount": 500,
-    "country": "NG"
+    "country_code": "NG"
   }'`,
     nodejs: `import fetch from 'node-fetch';
 
@@ -167,9 +167,9 @@ const response = await fetch('https://api.sendcomms.com/api/v1/airtime/purchase'
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    phone: '+2348012345678',
+    phone_number: '+2348012345678',
     amount: 500,
-    country: 'NG'
+    country_code: 'NG'
   }),
 });
 
@@ -184,9 +184,9 @@ response = requests.post(
         'Content-Type': 'application/json'
     },
     json={
-        'phone': '+2348012345678',
+        'phone_number': '+2348012345678',
         'amount': 500,
-        'country': 'NG'
+        'country_code': 'NG'
     }
 )
 
@@ -287,20 +287,29 @@ const responseExamples: Record<ServiceType, string> = {
   email: `{
   "success": true,
   "data": {
-    "id": "email_abc123xyz",
+    "transaction_id": "email_mjhw7md7_a8a05860a95c",
+    "email_id": "8f1c2d4e-9b3a-4a77-bd10-2f6c5e91a3d7",
+    "status": "sent",
     "from": "you@yourdomain.com",
-    "to": "customer@example.com",
+    "to": ["customer@example.com"],
     "subject": "Welcome to our platform!",
-    "status": "sent"
+    "recipients": 1,
+    "price": { "amount": 0.001, "currency": "USD" },
+    "created_at": "2026-08-22T09:11:44.007Z"
   }
 }`,
   sms: `{
   "success": true,
   "data": {
-    "id": "sms_def456uvw",
-    "to": "+2348012345678",
+    "transaction_id": "sms_mjhw8xkw_6f97ab63ff91",
+    "message_id": "SMf9c2ebdffd58b516f6895b02051c4b21",
     "status": "sent",
-    "segments": 1
+    "to": "+2348012345678",
+    "message_length": 41,
+    "segments": 1,
+    "country": { "code": "234", "name": "Nigeria" },
+    "region": "africa",
+    "created_at": "2026-08-22T09:14:02.118Z"
   }
 }`,
   airtime: `{
@@ -461,7 +470,9 @@ export default function QuickStartPage() {
           <div className="bg-[#0b0c0e] border border-white/5 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
               <span className="text-[10px] text-gray-500 uppercase tracking-wider">Response</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-400">200 OK</span>
+              <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-400">
+                {activeService === 'data' ? '201 Created' : '200 OK'}
+              </span>
             </div>
             <pre className="p-3 overflow-x-auto text-xs">
               <code className="text-gray-300">{responseExamples[activeService]}</code>

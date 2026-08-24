@@ -35,7 +35,7 @@ const createDomainExamples: Record<Language, string> = {
   -H "Content-Type: application/json" \\
   -d '{
     "name": "mail.yourdomain.com",
-    "region": "us-east-1"
+    "mode": "send_only"
   }'`,
   nodejs: `const response = await fetch('https://api.sendcomms.com/api/v1/domains', {
   method: 'POST',
@@ -45,7 +45,7 @@ const createDomainExamples: Record<Language, string> = {
   },
   body: JSON.stringify({
     name: 'mail.yourdomain.com',
-    region: 'us-east-1'
+    mode: 'send_only'
   })
 });
 
@@ -62,7 +62,7 @@ response = requests.post(
     },
     json={
         'name': 'mail.yourdomain.com',
-        'region': 'us-east-1'
+        'mode': 'send_only'
     }
 )
 
@@ -133,15 +133,15 @@ export default function DomainsDocsPage() {
           <div className="flex gap-3">
             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">2</span>
             <div>
-              <p className="font-medium text-white">Configure DNS records</p>
-              <p>Add the provided SPF, DKIM, and optional DMARC records to your DNS provider</p>
+              <p className="font-medium text-white">Add one DNS record</p>
+              <p>Add the single DKIM TXT record we return to your DNS provider. Leave your MX records alone &mdash; your inbox stays exactly where it is.</p>
             </div>
           </div>
           <div className="flex gap-3">
             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">3</span>
             <div>
               <p className="font-medium text-white">Verify your domain</p>
-              <p>Trigger verification to check DNS propagation (can take up to 72 hours)</p>
+              <p>Trigger verification to check DNS propagation. Records usually appear within 30 minutes, though some providers take longer.</p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -152,6 +152,81 @@ export default function DomainsDocsPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Ownership + availability */}
+      <div className="mb-10">
+        <h3 className="text-lg font-semibold text-white mb-3">Checking a domain before you add it</h3>
+        <p className="text-sm text-gray-400 mb-4">
+          A domain can be held by only one SendComms account at a time. Check availability before you commit &mdash;
+          the dashboard does this as you type.
+        </p>
+
+        <div className="flex items-center gap-3 mb-3">
+          <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-900/40 text-blue-400 border border-blue-500/20">GET</span>
+          <code className="text-sm text-gray-300 font-mono">/api/v1/domains/check?name=yourdomain.com</code>
+        </div>
+
+        <div className="bg-[#121316] border border-white/10 rounded-xl overflow-hidden mb-4">
+          <div className="px-4 py-2 bg-[#1a1c20] border-b border-white/5 flex items-center justify-between">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">RESPONSE</span>
+            <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-400">200 OK</span>
+          </div>
+          <div className="p-4">
+            <pre className="font-mono text-xs leading-relaxed bg-[#0b0c0e] p-4 rounded border border-white/5 overflow-x-auto">
+              <code className="text-gray-300">{`{
+  "success": true,
+  "data": {
+    "name": "yourdomain.com",
+    "available": true,
+    "reason": null,
+    "message": "Domain is available."
+  }
+}`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div className="border border-white/10 rounded-lg overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 bg-[#16181b]">
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">reason</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">What it means</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4"><code className="text-gray-300 text-xs">null</code></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Available &mdash; you can add it.</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4"><code className="text-gray-300 text-xs">taken_by_you</code></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Already on your account. Use the existing domain instead of adding it again.</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4"><code className="text-gray-300 text-xs">taken</code></td>
+                <td className="py-3 px-4 text-sm text-gray-400">
+                  Registered to another SendComms account. If you own the domain, contact{' '}
+                  <span className="text-blue-400">support@sendcomms.com</span> and we will transfer it.
+                </td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4"><code className="text-gray-300 text-xs">in_use_upstream</code></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Already configured on our mail infrastructure. Contact support if you own it.</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4"><code className="text-gray-300 text-xs">invalid</code></td>
+                <td className="py-3 px-4 text-sm text-gray-400">Not a valid domain name.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-sm text-gray-400 mt-4">
+          Adding a domain that is not available returns <code className="text-gray-300">409</code> with the same{' '}
+          <code className="text-gray-300">reason</code> field, so you can rely on the create call alone if you prefer.
+        </p>
       </div>
 
       {/* Domain Status */}
@@ -180,11 +255,11 @@ export default function DomainsDocsPage() {
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4"><span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs border border-red-500/20">failed</span></td>
-                <td className="py-3 px-4 text-sm text-gray-400">DNS records not detected within 72 hours</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Verification failed. Legacy status &mdash; new domains stay <span className="text-gray-300">pending</span> until the DKIM record is found.</td>
               </tr>
               <tr className="bg-[#0b0c0e]">
                 <td className="py-3 px-4"><span className="bg-orange-500/10 text-orange-400 px-2 py-0.5 rounded text-xs border border-orange-500/20">temporary_failure</span></td>
-                <td className="py-3 px-4 text-sm text-gray-400">DNS records temporarily not detected, will retry automatically</td>
+                <td className="py-3 px-4 text-sm text-gray-400">DNS records temporarily not detected. Legacy status &mdash; retried automatically.</td>
               </tr>
             </tbody>
           </table>
@@ -265,9 +340,19 @@ export default function DomainsDocsPage() {
                     <td className="py-3 px-4 text-sm text-gray-400">Domain name (e.g., mail.yourdomain.com)</td>
                   </tr>
                   <tr className="bg-[#0b0c0e]">
+                    <td className="py-3 px-4 text-sm text-blue-400 font-mono">mode</td>
+                    <td className="py-3 px-4 text-xs text-gray-400">string</td>
+                    <td className="py-3 px-4 text-sm text-gray-400">
+                      <code className="text-gray-300">send_only</code> (default) adds sending to a domain whose inbox
+                      stays with your current provider &mdash; one DKIM record, your MX untouched.{' '}
+                      <code className="text-gray-300">full</code> also hosts this domain&apos;s inbox, which{' '}
+                      <span className="text-amber-400">moves your MX to us and stops mail reaching your current provider</span>.
+                    </td>
+                  </tr>
+                  <tr className="bg-[#0b0c0e]">
                     <td className="py-3 px-4 text-sm text-blue-400 font-mono">region</td>
                     <td className="py-3 px-4 text-xs text-gray-400">string</td>
-                    <td className="py-3 px-4 text-sm text-gray-400">us-east-1, eu-west-1, sa-east-1, or ap-northeast-1</td>
+                    <td className="py-3 px-4 text-sm text-gray-400">Optional label kept on your domain record. All mail is currently sent from a single region, so this does not change routing.</td>
                   </tr>
                 </tbody>
               </table>
@@ -334,12 +419,22 @@ export default function DomainsDocsPage() {
             <div className="flex items-center gap-3 bg-[#16181b] border border-white/10 rounded-lg p-3">
               <span className="px-2 py-0.5 rounded text-xs font-bold bg-red-900/40 text-red-400 border border-red-500/20">DELETE</span>
               <span className="text-sm text-gray-300 font-mono">/api/v1/domains/:domainId</span>
-              <span className="text-sm text-gray-500">- Remove a domain</span>
+              <span className="text-sm text-gray-500">- Remove a domain (your DNS records are left in place; delete them yourself)</span>
             </div>
             <div className="flex items-center gap-3 bg-[#16181b] border border-white/10 rounded-lg p-3">
               <span className="px-2 py-0.5 rounded text-xs font-bold bg-green-900/40 text-green-400 border border-green-500/20">POST</span>
               <span className="text-sm text-gray-300 font-mono">/api/v1/domains/sync</span>
               <span className="text-sm text-gray-500">- Sync all domains to refresh status</span>
+            </div>
+            <div className="flex items-center gap-3 bg-[#16181b] border border-white/10 rounded-lg p-3">
+              <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-900/40 text-blue-400 border border-blue-500/20">GET</span>
+              <span className="text-sm text-gray-300 font-mono">/api/v1/domains/check?name=</span>
+              <span className="text-sm text-gray-500">- Check whether a domain can be added</span>
+            </div>
+            <div className="flex items-center gap-3 bg-[#16181b] border border-white/10 rounded-lg p-3">
+              <span className="px-2 py-0.5 rounded text-xs font-bold bg-green-900/40 text-green-400 border border-green-500/20">POST</span>
+              <span className="text-sm text-gray-300 font-mono">/api/v1/domains/:domainId/mailboxes</span>
+              <span className="text-sm text-gray-500">- Create a mailbox on a verified domain</span>
             </div>
           </div>
         </div>
@@ -348,29 +443,52 @@ export default function DomainsDocsPage() {
       {/* DNS Records Info */}
       <div className="mt-10 bg-[#121316] border border-white/10 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Required DNS Records</h3>
+
+        <div className="mb-5 rounded-lg border border-amber-500/25 bg-amber-500/5 p-4">
+          <p className="text-sm font-medium text-amber-300 mb-1">Your inbox is not affected</p>
+          <p className="text-sm text-gray-400">
+            SendComms sending domains are <span className="text-white font-medium">send-only</span>. You add one DKIM
+            record and nothing else. <span className="text-white font-medium">Do not change or remove your MX records</span> &mdash;
+            mail you receive keeps going to your current provider (Google Workspace, Zoho, Outlook, whatever you use today).
+          </p>
+        </div>
+
         <p className="text-sm text-gray-400 mb-4">
-          When you create a domain, you&apos;ll receive DNS records to add to your DNS provider. These typically include:
+          When you create a domain, the API returns the exact record to add. Domains verify on DKIM alone.
         </p>
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <span className="px-2 py-0.5 rounded text-xs font-bold bg-purple-900/40 text-purple-400 border border-purple-500/20">SPF</span>
+            <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-900/40 text-blue-400 border border-blue-500/20">DKIM</span>
             <div className="text-sm text-gray-400">
-              <p className="font-medium text-white">MX and TXT records</p>
-              <p>Authorizes SendComms to send on your behalf</p>
+              <p className="font-medium text-white">1 TXT record &mdash; required</p>
+              <p>
+                Host <code className="text-gray-300">scomms._domainkey</code>, value starting{' '}
+                <code className="text-gray-300">v=DKIM1; k=rsa; p=…</code>. Cryptographically signs your email so
+                receivers can prove it really came from you. We use our own selector so it never collides with a DKIM
+                record your existing provider already publishes.
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-900/40 text-blue-400 border border-blue-500/20">DKIM</span>
+            <span className="px-2 py-0.5 rounded text-xs font-bold bg-purple-900/40 text-purple-400 border border-purple-500/20">SPF</span>
             <div className="text-sm text-gray-400">
-              <p className="font-medium text-white">3 CNAME records</p>
-              <p>Cryptographically signs your emails for authenticity</p>
+              <p className="font-medium text-white">Optional &mdash; merge, never add a second record</p>
+              <p>
+                If you already have an SPF record, you may merge our sending IPs into it (before the trailing{' '}
+                <code className="text-gray-300">~all</code>/<code className="text-gray-300">-all</code>). Never create a
+                second SPF record &mdash; two SPF records make SPF invalid. Not required: DMARC passes through DKIM
+                alignment.
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <span className="px-2 py-0.5 rounded text-xs font-bold bg-green-900/40 text-green-400 border border-green-500/20">DMARC</span>
             <div className="text-sm text-gray-400">
-              <p className="font-medium text-white">TXT record (recommended)</p>
-              <p>Improves deliverability and provides reporting</p>
+              <p className="font-medium text-white">Optional TXT record (recommended)</p>
+              <p>
+                If you have no <code className="text-gray-300">_dmarc</code> record, adding one improves deliverability
+                and gives you reporting. If you already have one, leave it as it is.
+              </p>
             </div>
           </div>
         </div>

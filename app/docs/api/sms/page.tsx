@@ -34,7 +34,8 @@ const response = await axios.post(
   {
     to: '+233540800994',
     message: 'Your verification code is 123456'
-    // from is optional - omit to use "Sendcomms" as sender
+    // from is optional - omit to use the default sender.
+    // An alphanumeric name must be a registered sender ID (see Sender IDs).
   },
   {
     headers: {
@@ -56,7 +57,7 @@ const res = await fetch('https://api.sendcomms.com/api/v1/sms/send', {
   body: JSON.stringify({
     to: '+233540800994',
     message: 'Your verification code is 123456',
-    from: '+1234567890' // Optional: verified number from your dashboard
+    from: '+1234567890' // Optional: a verified number, or a registered sender ID
   })
 });`,
   python: `import requests
@@ -71,7 +72,7 @@ response = requests.post(
     json={
         'to': '+233540800994',
         'message': 'Your verification code is 123456'
-        # 'from' is optional - omit to use "Sendcomms" as sender
+        # 'from' is optional - omit to use the default sender
     }
 )
 
@@ -87,7 +88,7 @@ async with httpx.AsyncClient() as client:
         json={
             'to': '+233540800994',
             'message': 'Your verification code is 123456',
-            'from': '+1234567890'  # Must be verified in dashboard
+            'from': '+1234567890'  # A verified number, or a registered sender ID
         }
     )`,
   php: `<?php
@@ -222,6 +223,70 @@ export default function SendSMSDocsPage() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Routing */}
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold text-white mb-4">How your message is routed</h2>
+        <p className="text-sm text-gray-400 mb-4">
+          We pick the carrier route from the destination number. You do not choose a provider &mdash; if the first
+          route is unavailable we automatically fall back to the next one, and you are billed at the rate you were
+          quoted.
+        </p>
+        <div className="border border-white/10 rounded-lg overflow-hidden mb-4">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 bg-[#16181b]">
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Destination</th>
+                <th className="py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Route</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-white">31 African countries</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Local African network &mdash; best rates and deliverability</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-white">Rest of Africa</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Regional African route</td>
+              </tr>
+              <tr className="bg-[#0b0c0e]">
+                <td className="py-3 px-4 text-sm text-white">Everywhere else</td>
+                <td className="py-3 px-4 text-sm text-gray-400">Global route (180+ countries)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-gray-400 mb-3">
+          Check any destination with{' '}
+          <Link href="/docs/api/sms/countries" className="text-blue-400 hover:text-blue-300">GET /api/v1/sms/countries</Link>{' '}
+          rather than hard-coding a list &mdash; routes change as coverage does.
+        </p>
+        <p className="text-sm text-gray-400">
+          Delivery status is reported on every route. Check it with{' '}
+          <Link href="/docs/api/requests" className="text-blue-400 hover:text-blue-300">the request log</Link> or
+          subscribe to <code className="text-gray-300">sms.delivered</code> / <code className="text-gray-300">sms.failed</code>{' '}
+          webhooks &mdash; a successful send means the carrier accepted it, not that it has arrived yet.
+        </p>
+      </div>
+
+      {/* Sender */}
+      <div className="mb-10 bg-[#121316] border border-white/10 rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-white mb-3">Choosing the sender</h3>
+        <ul className="text-sm text-gray-400 space-y-2 list-disc pl-5">
+          <li><span className="text-white">Omit <code className="text-gray-300">from</code></span> and the message goes out under the default sender. This always works.</li>
+          <li>A <span className="text-white">phone number</span> must be one you have verified.</li>
+          <li>
+            An <span className="text-white">alphanumeric name</span> (e.g. <code className="text-gray-300">AcmeCorp</code>) must be a
+            registered sender ID &mdash; see{' '}
+            <Link href="/docs/api/sms/sender-ids" className="text-blue-400 hover:text-blue-300">Sender IDs</Link>. Ghanaian
+            carriers block unregistered names outright.
+          </li>
+          <li>
+            Using a sender ID registered to another account returns{' '}
+            <code className="text-gray-300">403 SENDER_ID_NOT_YOURS</code>.
+          </li>
+        </ul>
       </div>
 
       {/* Code Example */}
